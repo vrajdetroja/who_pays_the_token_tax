@@ -23,7 +23,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from microlm.model import Transformer, flops_per_token
+from microlm.model import flops_per_token
 from microlm.train.checkpoint import load_checkpoint, save_checkpoint, save_model_only, set_rng_state
 from microlm.train.config import RunConfig
 from microlm.train.optim import build_optimizer
@@ -33,6 +33,7 @@ from microlm.utils import atomic_write_text, git_sha, pick_device
 
 from .. import runs_table
 from ..eval.protocols import evaluate_stream
+from ..model import build as build_model
 from ..runs_table import budget_of
 from ..study import Study
 from ..tok.shard import ShardData
@@ -40,9 +41,18 @@ from .plan import Job
 from .stream import DocStream
 
 
+def masking(study: Study) -> bool:
+    return bool(study.training.get("mask_unreachable", False))
+
+
+def data_identity(data: ShardData, study: Study) -> str:
+    """What the run ID hashes besides the configs: the shard, and whether rows are masked."""
+    return data.hash + ("|mask_unreachable" if masking(study) else "")
+
+
 def run_dir(root: Path, job: Job, study: Study, data: ShardData, overrides: dict | None = None) -> tuple[RunConfig, Path]:
     run = job.run_config(study, overrides)
-    return run, root / "runs" / run.run_id(data.hash)
+    return run, root / "runs" / run.run_id(data_identity(data, study))
 
 
 def train_job(job: Job, study: Study, root: Path, operational: dict | None = None) -> dict:
@@ -59,14 +69,15 @@ def train_job(job: Job, study: Study, root: Path, operational: dict | None = Non
         return json.loads((out / "summary.json").read_text())
     if run.model.vocab_size != data.vocab_size:
         raise ValueError(f"model vocab {run.model.vocab_size} != tokenizer vocab {data.vocab_size}")
-    atomic_write_text(out / "config.json", json.dumps(run.to_dict() | {"job": job.__dict__, "data": data.hash}, indent=2))
+    atomic_write_text(out / "config.json", json.dumps(run.to_dict() | {"job": job.__dict__, "data": data_identity(data, study)},
+                                                      indent=2))
 
     random.seed(tc.seed)
     np.random.seed(tc.seed)
     torch.manual_seed(tc.seed)  # identical initialization at every level of a seed (same shapes)
-    model = Transformer(run.model).to(device)
-    counts = model.check_param_counts()
-    optimizer = build_optimizer(model, tc)
+    model = build_model(run.model, data.tokenizer.unreachable_ids(), masking(study)).to(device)
+    counts = model.base.check_param_counts()
+    optimizer = build_optimizer(model.base, tc)
     stream = DocStream(data.split("train"), data.bos_id, tc.seq_len, tc.data_seed, job.n_docs)
     W, mb, accum, total_steps = tc.windows_per_step, tc.micro_batch_size, tc.grad_accum, tc.total_steps
     if total_steps * W > stream.n_windows:
@@ -168,7 +179,8 @@ def train_job(job: Job, study: Study, root: Path, operational: dict | None = Non
             return {}
 
     summary = {
-        "run_id": out.name, "job": job.__dict__, "config": run.to_dict(), "data_identity": data.hash,
+        "run_id": out.name, "job": job.__dict__, "config": run.to_dict(), "data_identity": data_identity(data, study),
+        "masked_rows": int(model.unreachable.sum()),
         "git_sha": git_sha(), "hardware": hardware(), "params": counts, "flops_per_token": fpt,
         "steps": steps_done, "tokens": steps_done * tc.tokens_per_step,
         "train_flops": fpt["total"] * steps_done * tc.tokens_per_step,
@@ -211,7 +223,7 @@ def evaluate_job(job: Job, study: Study, root: Path, device: str = "auto", batch
         print(f"{out.name}: diverged; not evaluated")
         return []
     device = pick_device(device)
-    model = Transformer(run.model).to(device)
+    model = build_model(run.model, data.tokenizer.unreachable_ids(), masking(study)).to(device)
     model.load_state_dict(load_checkpoint(out / "model_final.pt", map_location=device)["model"])
     ev = study.evaluation
     base_w = study.training["base_seq_len"]

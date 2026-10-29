@@ -111,6 +111,10 @@ def simulate(truth: Truth, seed: int = 0) -> list[dict]:
                 for f in truth.fractions:
                     val = beta + b_i * math.log(1 / f)
                     endpoint(1.0, curve_endpoint(f), {"tok": val, "byte": val}, f)
+                for r in truth.levels:  # identity branches: r = 1 reading 1/r of the content
+                    if r > 1.0:
+                        val = beta + b_i * math.log(r)
+                        endpoint(1.0, f"identity_{r:g}", {"tok": val, "byte": val}, 1.0 / r)
                 for r in truth.levels:
                     if r == 1.0:
                         continue

@@ -11,6 +11,8 @@ Per (language, model, seed) unit, with W = 64 windows per step and L_r = round(5
     r > 1   main          one pass: N_r / (W L_r)  (~ steps_1.0, byte-matched windows)
       deployed            round(N_1 / (W L_r)): the reference token budget T = N_1
     swap (r = 1.5, Russian)  main run with the second tokenizer (negative control 1)
+      identity_<r>        (r = 1.0) the share of the pass its level-r deployed branch reads:
+                          the same bytes at r = 1, the matched prediction for H3
 
 N_r counts the tokens of the unit's content at level r. A branch with B steps starts from
 its parent's full checkpoint at step B - round(0.2 B), where the parent is still in its
@@ -104,6 +106,12 @@ def unit_jobs(study: Study, root: Path, lang: str, model: str, seed: int, levels
     n_docs = ref.docs_for_bytes(content_bytes)
     N1, bytes_ = ref.prefix(n_docs)
     jobs: list[Job] = []
+    identity: dict[float, float] = {}  # level r -> share of one pass its deployed branch reads
+    if curve and deployed and study.endpoints.get("identity_branches") and 1.0 in levels:
+        for lv in levels:
+            if lv > 1.0:
+                d, L = ShardData(shard_dir(root, lang, lv, "main"), verify=False), study.seq_len(lv)
+                identity[lv] = round(N1 / (W * L)) / ((d.prefix(n_docs)[0] - 1) // L // W)
     variants = [(lv, "main") for lv in levels] + ([(study.tokenizer["swap_level"], "swap")] if swap else [])
     for level, tok in variants:
         data = ShardData(shard_dir(root, lang, level, tok), verify=False)
@@ -118,7 +126,7 @@ def unit_jobs(study: Study, root: Path, lang: str, model: str, seed: int, levels
         branches: list[tuple[str, int, float]] = []
         if level == 1.0 and tok == "main" and curve:
             branches += [(curve_endpoint(f), round(f * steps), f) for f in study.endpoints["data_curve_fractions"]]
-            branches += [(curve_endpoint(f), round(f * steps), f) for f in study.endpoints.get("identity_fractions") or []]
+            branches += [(f"identity_{lv:g}", round(f * steps), f) for lv, f in identity.items()]
         if level > 1.0 and tok == "main" and deployed:
             b = round(N1 / (W * L))
             branches.append(("deployed", b, b / steps))

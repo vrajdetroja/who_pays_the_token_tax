@@ -113,6 +113,21 @@ def data_curve(runs: pd.DataFrame, eval_set: str = "heldout", metric: str = "bpb
     return apply(df, one, UNIT)
 
 
+def identity_matched(runs: pd.DataFrame, eval_set: str = "heldout", metric: str = "bpb") -> pd.DataFrame:
+    """Per (unit, level r): the BPB cost, at r = 1, of reading only the bytes the level-r
+    as-deployed branch reads (bpb of the reference's identity_<r> branch minus the
+    reference). If finer segmentation neither helped nor hurt per byte read, the budget
+    channel would equal it: the matched form of the accounting identity (H3)."""
+    ref = reference(runs, eval_set, metric)
+    df = _main(runs, eval_set)
+    df = df[(df["level"] == 1.0) & (df["ctx"] == "tok") & df["endpoint"].str.startswith("identity_")]
+    if df.empty:
+        return pd.DataFrame(columns=UNIT + ["level", "matched_prediction"])
+    out = df.assign(level=df["endpoint"].str.removeprefix("identity_").astype(float))
+    r = np.asarray(out.set_index(UNIT).index.map(ref), dtype=float)
+    return out.assign(matched_prediction=out[metric].to_numpy() - r)[UNIT + ["level", "matched_prediction"]]
+
+
 def swap_control(runs: pd.DataFrame, level: float, eval_set: str = "heldout", metric: str = "bpb") -> pd.DataFrame:
     """Negative control 1: per (lang, model, seed), BPB of the swapped tokenizer minus the
     main one at the same level, full content, byte context."""

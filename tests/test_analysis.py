@@ -140,3 +140,11 @@ def test_decontamination_flags_a_planted_flores_sentence():
     flags = decontam.contaminated([clean, planted], ref, by_char=False, workers=2)
     assert flags == [False, True]
     assert decontam.contaminated(["无关的文本。" * 10, "前言" + zh[3]], zh, by_char=True, workers=2) == [False, True]
+
+
+@pytest.mark.parametrize("kappa", [1.0, 0.5])
+def test_matched_identity_recovers_the_budget_channel_ratio(tmp_path, kappa):
+    path = tmp_path / "runs.csv"
+    runs_table.append_rows(path, simulate(Truth(kappa=kappa), seed=2))
+    lv = A.run(runs_table.load(path), load_study())["models"]["M"]["levels"]["2.25"]
+    assert lv["identity_matched"]["ratio"] == pytest.approx(kappa, abs=0.12)

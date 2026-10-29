@@ -75,6 +75,8 @@ def analyze_model(runs: pd.DataFrame, study: Study, model: str, eval_set: str, w
                                 "mean_curvature": float(curve["curvature"].mean())},
                  "levels": {}}
     cols = ["D_tt", "D_tb", "D_bt", "D_bb", "phi_budget", "phi_context", "share"]
+    matched = D.identity_matched(runs, eval_set)
+    matched = matched[matched["model"] == model]
     for level, c in c_all.groupby("level"):
         c = c.copy()
         lr = float(np.log(c["r_measured"]).mean())  # realized dose, not the nominal level
@@ -100,6 +102,15 @@ def analyze_model(runs: pd.DataFrame, study: Study, model: str, eval_set: str, w
             "noise": {"D_bb": noise(c, "D_bb"), "D_tt": noise(c, "D_tt")},
             "per_language": per_language(c, cols),
         }
+        m = c.merge(matched, on=["lang", "model", "seed", "level"], how="inner")
+        if len(m) and m["lang"].nunique() > 1:  # H3, matched form (identity branches)
+            m["identity_gap_matched"] = m["phi_budget"] - m["matched_prediction"]
+            pm = pool(m, "matched_prediction", within=within)
+            res["identity_matched"] = {
+                "prediction": pm.to_dict(),
+                "gap": pool(m, "identity_gap_matched", within=within).to_dict(),
+                "ratio": pool(m, "phi_budget", within=within).estimate / pm.estimate,
+            }
         out["levels"][f"{level:g}"] = res
     if {1.5, 2.25} <= set(c_all["level"]):
         w = c_all.pivot_table(index=["lang", "seed"], columns="level", values="D_tt").dropna().reset_index()
@@ -136,8 +147,9 @@ def check_predictions(result: dict, predictions: dict) -> list[dict]:
     lv = result["models"].get("M", {}).get("levels", {}).get("2.25")
     if not lv:
         return rows
+    ratio = lv["identity_matched"]["ratio"] if "identity_matched" in lv else lv["identity_ratio"]
     observed = {"share_2.25": lv["share"]["estimate"], "D_tt_2.25": lv["pooled"]["D_tt"]["estimate"],
-                "D_bb_2.25": lv["pooled"]["D_bb"]["estimate"], "identity_ratio_2.25": lv["identity_ratio"]}
+                "D_bb_2.25": lv["pooled"]["D_bb"]["estimate"], "identity_ratio_2.25": ratio}
     for key, rng in (predictions or {}).items():
         if rng is None or key not in observed:
             continue
@@ -169,8 +181,8 @@ def run(runs: pd.DataFrame, study: Study, eval_set: str = "heldout", within: str
 # ---------------------------------------------------------------------------------------
 # Sealing (the scout)
 
-SEALED_KEYS = {"pooled", "share", "H1_contrast", "residual_tost", "identity_ratio", "text_lost", "per_language",
-               "H5_dose_step", "H4_size_M_minus_S", "predictions"}
+SEALED_KEYS = {"pooled", "share", "H1_contrast", "residual_tost", "identity_ratio", "identity_matched", "text_lost",
+               "per_language", "H5_dose_step", "H4_size_M_minus_S", "predictions"}
 
 
 def split_sealed(obj):

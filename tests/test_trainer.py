@@ -105,3 +105,62 @@ def test_branch_starts_from_its_parent_and_keeps_its_schedule(smoke_root):
     # the as-deployed branch reads (to within a window) the reference's token budget
     ref = next(j for j in jobs if j.level == 1.0 and j.parent is None)
     assert abs(dep.train_tokens - ref.train_tokens) <= study.training["windows_per_step"] * dep.seq_len
+
+
+def _tiny_base():
+    torch.manual_seed(0)
+    return Transformer(ModelConfig(vocab_size=300, n_layer=1, d_model=32, n_head=2, max_seq_len=64, pos_type="rope"))
+
+
+def test_masked_model_is_the_softmax_over_reachable_rows():
+    import torch.nn.functional as F
+    from recount.model import DoseLM
+
+    base = _tiny_base()
+    unreachable = list(range(200, 299))  # 299 plays the separator: reachable
+    m = DoseLM(base, unreachable)
+    x, y = torch.randint(0, 200, (2, 16)), torch.randint(0, 200, (2, 16))
+    logits, loss = m(x, y, reduction="none")
+    assert torch.isinf(logits[..., 200:299]).all() and torch.isfinite(logits[..., :200]).all()
+    keep = torch.tensor([i for i in range(300) if i not in unreachable])
+    raw, _ = base(x)
+    ref = F.cross_entropy(raw[..., keep].float().reshape(-1, len(keep)), torch.searchsorted(keep, y).reshape(-1),
+                          reduction="none").view(2, 16)
+    torch.testing.assert_close(loss, ref)
+    loss.mean().backward()
+    assert base.tok_emb.weight.grad[200:299].abs().max() == 0  # masked rows learn nothing
+
+
+def test_unmasked_model_is_exactly_microlm_and_checkpoints_round_trip():
+    from recount.model import DoseLM
+
+    base = _tiny_base()
+    x, y = torch.randint(0, 300, (2, 16)), torch.randint(0, 300, (2, 16))
+    assert torch.equal(DoseLM(base, None)(x, y)[1], base(x, y)[1])
+    a = DoseLM(base, list(range(250, 299)))
+    b = DoseLM(_tiny_base(), list(range(250, 299)))
+    b.load_state_dict(a.state_dict())
+    assert "unreachable" not in a.state_dict()  # the mask comes from the tokenizer, not the checkpoint
+
+
+def test_masked_evaluation_wastes_no_probability(tiny_model):
+    from recount.model import DoseLM
+
+    m = DoseLM(tiny_model, list(range(150, 299)))
+    tokens = (np.arange(500) % 150).astype(np.uint16)
+    res = evaluate_stream(m, tokens, torch.ones(300, dtype=torch.long), 64, 32, "cpu", dtype="fp32",
+                          unreachable=torch.arange(150, 299))
+    assert res.wasted_mass == 0.0
+
+
+def test_identity_branches_read_what_the_deployed_branches_read(smoke_root):
+    root, study = smoke_root
+    study.endpoints = study.endpoints | {"identity_branches": True}
+    jobs = plan.unit_jobs(study, root, "smk_Cyrl", "M", 0, study.levels)
+    ref = next(j for j in jobs if j.level == 1.0 and j.parent is None)
+    for r in (1.5, 2.25):
+        ident = next(j for j in jobs if j.endpoint == f"identity_{r:g}")
+        dep = next(j for j in jobs if j.endpoint == "deployed" and j.level == r)
+        assert ident.parent == ref.name and ident.branch_step in ref.keep_ckpts
+        assert abs(ident.content_fraction - dep.content_fraction) < 1e-12
+        assert abs(ident.steps - dep.content_fraction * ref.steps) <= 1
