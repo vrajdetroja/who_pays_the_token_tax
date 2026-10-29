@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.DS_Store
+# Root-anchored: an unanchored `data/` would also hide the src/recount/data package.
+/data/
+/runs/
+/logs/
+/wandb/
+# Level contrasts computed before the main analysis. Only their SHA-256 is committed
+# (sealed/*.sha256 lives in results/seals/), never the numbers.
+/sealed/

@@ -1,0 +1,53 @@
+# The unit run. Every ablation inherits this file and changes one thing.
+# Architecture: deliberately vanilla (GPT-2 style), so each modification is measured
+# against the reference point Narang et al. (2021) used.
+#
+# 10.62M non-embedding params, 212M tokens (20 per non-embedding param).
+name: baseline
+notes: GPT-2-style pre-LN transformer, 10.6M non-embedding params, 212M tokens, context 512.
+
+model:
+  n_layer: 6
+  d_model: 384
+  n_head: 6              # d_head = 64
+  n_kv_head: null        # MHA
+  max_seq_len: 512
+  pos_type: learned
+  ffn_type: gelu
+  ffn_mult: 4.0          # 2 * 4 * d^2 FFN weights; gated FFNs get hidden = (2/3) * 4d = 1024
+  norm_type: layernorm
+  norm_position: pre
+  final_norm: true
+  qk_norm: false
+  bias: false
+  tie_embeddings: true
+  init_std: 0.02
+  scale_residual_init: true
+
+train:
+  data_dir: data/fineweb_edu/bpe_8192
+  seed: 0
+  data_seed: 0
+  data_order: shuffled
+  seq_len: 512
+  tokens_per_step: 131072     # 256 windows; constant across every unit-size run
+  total_tokens: 212336640     # 1620 steps
+  optimizer: adamw
+  lr: 4.0e-3                  # placeholder until the baseline LR sweep (week 6)
+  beta1: 0.9
+  beta2: 0.95
+  weight_decay: 0.1
+  grad_clip: 1.0
+  schedule: cosine
+  warmup_steps: 200
+  min_lr_ratio: 0.1
+  dtype: bf16
+  eval_tokens: 1048576
+  final_eval_tokens: null     # whole val_iid (~10M tokens)
+  # operational
+  micro_batch_size: 64
+  compile: true
+  eval_interval: 200
+  log_interval: 20
+  diag_interval: 200
+  ckpt_interval: 200

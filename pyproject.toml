@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "recount"
+version = "0.1.0"
+description = "The tokenization tax: fertility or accounting? A controlled decomposition in small LMs."
+requires-python = ">=3.10"
+dependencies = ["torch>=2.1", "numpy", "regex", "pyyaml", "tqdm"]
+
+[project.optional-dependencies]
+data = ["huggingface_hub", "pyarrow"]
+wandb = ["wandb"]
+analysis = ["pandas", "matplotlib", "scipy"]
+table1 = ["tiktoken", "tokenizers", "transformers"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
