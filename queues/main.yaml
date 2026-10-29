@@ -19,7 +19,9 @@
   keep_ckpts:
   - 425
   - 850
+  - 1486
   - 1699
+  - 2244
   controls:
   - shuffle
   - stride
@@ -84,6 +86,48 @@
   r_measured: 1.0
   parent: eus_Latn-M-r1-main-s0
   branch_step: 1699
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-M-r1-main-s0-identity_1.5
+  lang: eus_Latn
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 216124
+  seq_len: 512
+  steps: 2805
+  warmup_steps: 85
+  content_fraction: 0.6603729603729603
+  train_tokens: 91914240
+  train_bytes: 419833034
+  r_measured: 1.0
+  parent: eus_Latn-M-r1-main-s0
+  branch_step: 2244
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-M-r1-main-s0-identity_2.25
+  lang: eus_Latn
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 216124
+  seq_len: 512
+  steps: 1857
+  warmup_steps: 85
+  content_fraction: 0.43713822644130584
+  train_tokens: 60850176
+  train_bytes: 277911239
+  r_measured: 1.0
+  parent: eus_Latn-M-r1-main-s0
+  branch_step: 1486
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -198,7 +242,9 @@
   keep_ckpts:
   - 425
   - 850
+  - 1486
   - 1699
+  - 2244
   controls:
   - shuffle
   - stride
@@ -263,6 +309,48 @@
   r_measured: 1.0
   parent: eus_Latn-M-r1-main-s1
   branch_step: 1699
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-M-r1-main-s1-identity_1.5
+  lang: eus_Latn
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 216124
+  seq_len: 512
+  steps: 2805
+  warmup_steps: 85
+  content_fraction: 0.6603729603729603
+  train_tokens: 91914240
+  train_bytes: 419833034
+  r_measured: 1.0
+  parent: eus_Latn-M-r1-main-s1
+  branch_step: 2244
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-M-r1-main-s1-identity_2.25
+  lang: eus_Latn
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 216124
+  seq_len: 512
+  steps: 1857
+  warmup_steps: 85
+  content_fraction: 0.43713822644130584
+  train_tokens: 60850176
+  train_bytes: 277911239
+  r_measured: 1.0
+  parent: eus_Latn-M-r1-main-s1
+  branch_step: 1486
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -377,7 +465,9 @@
   keep_ckpts:
   - 425
   - 850
+  - 1486
   - 1699
+  - 2244
   controls:
   - shuffle
   - stride
@@ -442,6 +532,48 @@
   r_measured: 1.0
   parent: eus_Latn-M-r1-main-s2
   branch_step: 1699
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-M-r1-main-s2-identity_1.5
+  lang: eus_Latn
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 216124
+  seq_len: 512
+  steps: 2805
+  warmup_steps: 85
+  content_fraction: 0.6603729603729603
+  train_tokens: 91914240
+  train_bytes: 419833034
+  r_measured: 1.0
+  parent: eus_Latn-M-r1-main-s2
+  branch_step: 2244
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-M-r1-main-s2-identity_2.25
+  lang: eus_Latn
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 216124
+  seq_len: 512
+  steps: 1857
+  warmup_steps: 85
+  content_fraction: 0.43713822644130584
+  train_tokens: 60850176
+  train_bytes: 277911239
+  r_measured: 1.0
+  parent: eus_Latn-M-r1-main-s2
+  branch_step: 1486
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -556,7 +688,9 @@
   keep_ckpts:
   - 469
   - 938
+  - 1681
   - 1875
+  - 2514
   controls:
   - shuffle
   - stride
@@ -621,6 +755,48 @@
   r_measured: 1.0
   parent: rus_Cyrl-M-r1-main-s0
   branch_step: 1875
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-M-r1-main-s0-identity_1.5
+  lang: rus_Cyrl
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 124893
+  seq_len: 512
+  steps: 3142
+  warmup_steps: 94
+  content_fraction: 0.6704569834799399
+  train_tokens: 102957056
+  train_bytes: 733260663
+  r_measured: 1.0
+  parent: rus_Cyrl-M-r1-main-s0
+  branch_step: 2514
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-M-r1-main-s0-identity_2.25
+  lang: rus_Cyrl
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 124893
+  seq_len: 512
+  steps: 2101
+  warmup_steps: 94
+  content_fraction: 0.4482461803313966
+  train_tokens: 68845568
+  train_bytes: 490234720
+  r_measured: 1.0
+  parent: rus_Cyrl-M-r1-main-s0
+  branch_step: 1681
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -758,7 +934,9 @@
   keep_ckpts:
   - 469
   - 938
+  - 1681
   - 1875
+  - 2514
   controls:
   - shuffle
   - stride
@@ -823,6 +1001,48 @@
   r_measured: 1.0
   parent: rus_Cyrl-M-r1-main-s1
   branch_step: 1875
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-M-r1-main-s1-identity_1.5
+  lang: rus_Cyrl
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 124893
+  seq_len: 512
+  steps: 3142
+  warmup_steps: 94
+  content_fraction: 0.6704569834799399
+  train_tokens: 102957056
+  train_bytes: 733260663
+  r_measured: 1.0
+  parent: rus_Cyrl-M-r1-main-s1
+  branch_step: 2514
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-M-r1-main-s1-identity_2.25
+  lang: rus_Cyrl
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 124893
+  seq_len: 512
+  steps: 2101
+  warmup_steps: 94
+  content_fraction: 0.4482461803313966
+  train_tokens: 68845568
+  train_bytes: 490234720
+  r_measured: 1.0
+  parent: rus_Cyrl-M-r1-main-s1
+  branch_step: 1681
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -960,7 +1180,9 @@
   keep_ckpts:
   - 469
   - 938
+  - 1681
   - 1875
+  - 2514
   controls:
   - shuffle
   - stride
@@ -1025,6 +1247,48 @@
   r_measured: 1.0
   parent: rus_Cyrl-M-r1-main-s2
   branch_step: 1875
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-M-r1-main-s2-identity_1.5
+  lang: rus_Cyrl
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 124893
+  seq_len: 512
+  steps: 3142
+  warmup_steps: 94
+  content_fraction: 0.6704569834799399
+  train_tokens: 102957056
+  train_bytes: 733260663
+  r_measured: 1.0
+  parent: rus_Cyrl-M-r1-main-s2
+  branch_step: 2514
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-M-r1-main-s2-identity_2.25
+  lang: rus_Cyrl
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 124893
+  seq_len: 512
+  steps: 2101
+  warmup_steps: 94
+  content_fraction: 0.4482461803313966
+  train_tokens: 68845568
+  train_bytes: 490234720
+  r_measured: 1.0
+  parent: rus_Cyrl-M-r1-main-s2
+  branch_step: 1681
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -1162,7 +1426,9 @@
   keep_ckpts:
   - 400
   - 800
+  - 1414
   - 1600
+  - 2118
   controls:
   - shuffle
   - stride
@@ -1227,6 +1493,48 @@
   r_measured: 1.0
   parent: arb_Arab-M-r1-main-s0
   branch_step: 1600
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-M-r1-main-s0-identity_1.5
+  lang: arb_Arab
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 172670
+  seq_len: 512
+  steps: 2647
+  warmup_steps: 80
+  content_fraction: 0.6615422762211753
+  train_tokens: 86736896
+  train_bytes: 581503457
+  r_measured: 1.0
+  parent: arb_Arab-M-r1-main-s0
+  branch_step: 2118
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-M-r1-main-s0-identity_2.25
+  lang: arb_Arab
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 172670
+  seq_len: 512
+  steps: 1767
+  warmup_steps: 80
+  content_fraction: 0.4416583912611718
+  train_tokens: 57901056
+  train_bytes: 388222931
+  r_measured: 1.0
+  parent: arb_Arab-M-r1-main-s0
+  branch_step: 1414
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -1341,7 +1649,9 @@
   keep_ckpts:
   - 400
   - 800
+  - 1414
   - 1600
+  - 2118
   controls:
   - shuffle
   - stride
@@ -1406,6 +1716,48 @@
   r_measured: 1.0
   parent: arb_Arab-M-r1-main-s1
   branch_step: 1600
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-M-r1-main-s1-identity_1.5
+  lang: arb_Arab
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 172670
+  seq_len: 512
+  steps: 2647
+  warmup_steps: 80
+  content_fraction: 0.6615422762211753
+  train_tokens: 86736896
+  train_bytes: 581503457
+  r_measured: 1.0
+  parent: arb_Arab-M-r1-main-s1
+  branch_step: 2118
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-M-r1-main-s1-identity_2.25
+  lang: arb_Arab
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 172670
+  seq_len: 512
+  steps: 1767
+  warmup_steps: 80
+  content_fraction: 0.4416583912611718
+  train_tokens: 57901056
+  train_bytes: 388222931
+  r_measured: 1.0
+  parent: arb_Arab-M-r1-main-s1
+  branch_step: 1414
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -1520,7 +1872,9 @@
   keep_ckpts:
   - 400
   - 800
+  - 1414
   - 1600
+  - 2118
   controls:
   - shuffle
   - stride
@@ -1585,6 +1939,48 @@
   r_measured: 1.0
   parent: arb_Arab-M-r1-main-s2
   branch_step: 1600
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-M-r1-main-s2-identity_1.5
+  lang: arb_Arab
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 172670
+  seq_len: 512
+  steps: 2647
+  warmup_steps: 80
+  content_fraction: 0.6615422762211753
+  train_tokens: 86736896
+  train_bytes: 581503457
+  r_measured: 1.0
+  parent: arb_Arab-M-r1-main-s2
+  branch_step: 2118
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-M-r1-main-s2-identity_2.25
+  lang: arb_Arab
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 172670
+  seq_len: 512
+  steps: 1767
+  warmup_steps: 80
+  content_fraction: 0.4416583912611718
+  train_tokens: 57901056
+  train_bytes: 388222931
+  r_measured: 1.0
+  parent: arb_Arab-M-r1-main-s2
+  branch_step: 1414
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -1699,7 +2095,9 @@
   keep_ckpts:
   - 409
   - 818
+  - 1446
   - 1635
+  - 2175
   controls:
   - shuffle
   - stride
@@ -1764,6 +2162,48 @@
   r_measured: 1.0
   parent: cmn_Hani-M-r1-main-s0
   branch_step: 1635
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-M-r1-main-s0-identity_1.5
+  lang: cmn_Hani
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 135428
+  seq_len: 512
+  steps: 2719
+  warmup_steps: 82
+  content_fraction: 0.6648780487804878
+  train_tokens: 89096192
+  train_bytes: 373395438
+  r_measured: 1.0
+  parent: cmn_Hani-M-r1-main-s0
+  branch_step: 2175
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-M-r1-main-s0-identity_2.25
+  lang: cmn_Hani
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 135428
+  seq_len: 512
+  steps: 1808
+  warmup_steps: 82
+  content_fraction: 0.44209245742092457
+  train_tokens: 59244544
+  train_bytes: 248279075
+  r_measured: 1.0
+  parent: cmn_Hani-M-r1-main-s0
+  branch_step: 1446
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -1878,7 +2318,9 @@
   keep_ckpts:
   - 409
   - 818
+  - 1446
   - 1635
+  - 2175
   controls:
   - shuffle
   - stride
@@ -1943,6 +2385,48 @@
   r_measured: 1.0
   parent: cmn_Hani-M-r1-main-s1
   branch_step: 1635
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-M-r1-main-s1-identity_1.5
+  lang: cmn_Hani
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 135428
+  seq_len: 512
+  steps: 2719
+  warmup_steps: 82
+  content_fraction: 0.6648780487804878
+  train_tokens: 89096192
+  train_bytes: 373395438
+  r_measured: 1.0
+  parent: cmn_Hani-M-r1-main-s1
+  branch_step: 2175
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-M-r1-main-s1-identity_2.25
+  lang: cmn_Hani
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 135428
+  seq_len: 512
+  steps: 1808
+  warmup_steps: 82
+  content_fraction: 0.44209245742092457
+  train_tokens: 59244544
+  train_bytes: 248279075
+  r_measured: 1.0
+  parent: cmn_Hani-M-r1-main-s1
+  branch_step: 1446
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -2057,7 +2541,9 @@
   keep_ckpts:
   - 409
   - 818
+  - 1446
   - 1635
+  - 2175
   controls:
   - shuffle
   - stride
@@ -2122,6 +2608,48 @@
   r_measured: 1.0
   parent: cmn_Hani-M-r1-main-s2
   branch_step: 1635
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-M-r1-main-s2-identity_1.5
+  lang: cmn_Hani
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 135428
+  seq_len: 512
+  steps: 2719
+  warmup_steps: 82
+  content_fraction: 0.6648780487804878
+  train_tokens: 89096192
+  train_bytes: 373395438
+  r_measured: 1.0
+  parent: cmn_Hani-M-r1-main-s2
+  branch_step: 2175
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-M-r1-main-s2-identity_2.25
+  lang: cmn_Hani
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 135428
+  seq_len: 512
+  steps: 1808
+  warmup_steps: 82
+  content_fraction: 0.44209245742092457
+  train_tokens: 59244544
+  train_bytes: 248279075
+  r_measured: 1.0
+  parent: cmn_Hani-M-r1-main-s2
+  branch_step: 1446
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -2236,7 +2764,9 @@
   keep_ckpts:
   - 381
   - 762
+  - 1365
   - 1523
+  - 2038
   controls:
   - shuffle
   - stride
@@ -2301,6 +2831,48 @@
   r_measured: 1.0
   parent: tam_Taml-M-r1-main-s0
   branch_step: 1523
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-M-r1-main-s0-identity_1.5
+  lang: tam_Taml
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 227639
+  seq_len: 512
+  steps: 2547
+  warmup_steps: 76
+  content_fraction: 0.6687730384412849
+  train_tokens: 83460096
+  train_bytes: 1095090087
+  r_measured: 1.0
+  parent: tam_Taml-M-r1-main-s0
+  branch_step: 2038
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-M-r1-main-s0-identity_2.25
+  lang: tam_Taml
+  model: M
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 227639
+  seq_len: 512
+  steps: 1706
+  warmup_steps: 76
+  content_fraction: 0.44776514149695845
+  train_tokens: 55902208
+  train_bytes: 733198170
+  r_measured: 1.0
+  parent: tam_Taml-M-r1-main-s0
+  branch_step: 1365
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -2415,7 +2987,9 @@
   keep_ckpts:
   - 381
   - 762
+  - 1365
   - 1523
+  - 2038
   controls:
   - shuffle
   - stride
@@ -2480,6 +3054,48 @@
   r_measured: 1.0
   parent: tam_Taml-M-r1-main-s1
   branch_step: 1523
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-M-r1-main-s1-identity_1.5
+  lang: tam_Taml
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 227639
+  seq_len: 512
+  steps: 2547
+  warmup_steps: 76
+  content_fraction: 0.6687730384412849
+  train_tokens: 83460096
+  train_bytes: 1095090087
+  r_measured: 1.0
+  parent: tam_Taml-M-r1-main-s1
+  branch_step: 2038
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-M-r1-main-s1-identity_2.25
+  lang: tam_Taml
+  model: M
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 227639
+  seq_len: 512
+  steps: 1706
+  warmup_steps: 76
+  content_fraction: 0.44776514149695845
+  train_tokens: 55902208
+  train_bytes: 733198170
+  r_measured: 1.0
+  parent: tam_Taml-M-r1-main-s1
+  branch_step: 1365
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -2594,7 +3210,9 @@
   keep_ckpts:
   - 381
   - 762
+  - 1365
   - 1523
+  - 2038
   controls:
   - shuffle
   - stride
@@ -2659,6 +3277,48 @@
   r_measured: 1.0
   parent: tam_Taml-M-r1-main-s2
   branch_step: 1523
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-M-r1-main-s2-identity_1.5
+  lang: tam_Taml
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 227639
+  seq_len: 512
+  steps: 2547
+  warmup_steps: 76
+  content_fraction: 0.6687730384412849
+  train_tokens: 83460096
+  train_bytes: 1095090087
+  r_measured: 1.0
+  parent: tam_Taml-M-r1-main-s2
+  branch_step: 2038
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-M-r1-main-s2-identity_2.25
+  lang: tam_Taml
+  model: M
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 227639
+  seq_len: 512
+  steps: 1706
+  warmup_steps: 76
+  content_fraction: 0.44776514149695845
+  train_tokens: 55902208
+  train_bytes: 733198170
+  r_measured: 1.0
+  parent: tam_Taml-M-r1-main-s2
+  branch_step: 1365
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -2773,7 +3433,9 @@
   keep_ckpts:
   - 142
   - 283
+  - 496
   - 566
+  - 749
   controls:
   - shuffle
   - stride
@@ -2838,6 +3500,48 @@
   r_measured: 1.0
   parent: eus_Latn-S-r1-main-s0
   branch_step: 566
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-S-r1-main-s0-identity_1.5
+  lang: eus_Latn
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 72544
+  seq_len: 512
+  steps: 936
+  warmup_steps: 28
+  content_fraction: 0.6608391608391608
+  train_tokens: 30670848
+  train_bytes: 140043686
+  r_measured: 1.0
+  parent: eus_Latn-S-r1-main-s0
+  branch_step: 749
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-S-r1-main-s0-identity_2.25
+  lang: eus_Latn
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 72544
+  seq_len: 512
+  steps: 620
+  warmup_steps: 28
+  content_fraction: 0.4375
+  train_tokens: 20316160
+  train_bytes: 92714107
+  r_measured: 1.0
+  parent: eus_Latn-S-r1-main-s0
+  branch_step: 496
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -2952,7 +3656,9 @@
   keep_ckpts:
   - 142
   - 283
+  - 496
   - 566
+  - 749
   controls:
   - shuffle
   - stride
@@ -3017,6 +3723,48 @@
   r_measured: 1.0
   parent: eus_Latn-S-r1-main-s1
   branch_step: 566
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-S-r1-main-s1-identity_1.5
+  lang: eus_Latn
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 72544
+  seq_len: 512
+  steps: 936
+  warmup_steps: 28
+  content_fraction: 0.6608391608391608
+  train_tokens: 30670848
+  train_bytes: 140043686
+  r_measured: 1.0
+  parent: eus_Latn-S-r1-main-s1
+  branch_step: 749
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-S-r1-main-s1-identity_2.25
+  lang: eus_Latn
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 72544
+  seq_len: 512
+  steps: 620
+  warmup_steps: 28
+  content_fraction: 0.4375
+  train_tokens: 20316160
+  train_bytes: 92714107
+  r_measured: 1.0
+  parent: eus_Latn-S-r1-main-s1
+  branch_step: 496
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -3131,7 +3879,9 @@
   keep_ckpts:
   - 142
   - 283
+  - 496
   - 566
+  - 749
   controls:
   - shuffle
   - stride
@@ -3196,6 +3946,48 @@
   r_measured: 1.0
   parent: eus_Latn-S-r1-main-s2
   branch_step: 566
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-S-r1-main-s2-identity_1.5
+  lang: eus_Latn
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 72544
+  seq_len: 512
+  steps: 936
+  warmup_steps: 28
+  content_fraction: 0.6608391608391608
+  train_tokens: 30670848
+  train_bytes: 140043686
+  r_measured: 1.0
+  parent: eus_Latn-S-r1-main-s2
+  branch_step: 749
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: eus_Latn-S-r1-main-s2-identity_2.25
+  lang: eus_Latn
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/eus_Latn/r1
+  n_docs: 72544
+  seq_len: 512
+  steps: 620
+  warmup_steps: 28
+  content_fraction: 0.4375
+  train_tokens: 20316160
+  train_bytes: 92714107
+  r_measured: 1.0
+  parent: eus_Latn-S-r1-main-s2
+  branch_step: 496
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -3310,7 +4102,9 @@
   keep_ckpts:
   - 157
   - 313
+  - 562
   - 626
+  - 839
   controls:
   - shuffle
   - stride
@@ -3375,6 +4169,48 @@
   r_measured: 1.0
   parent: rus_Cyrl-S-r1-main-s0
   branch_step: 626
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-S-r1-main-s0-identity_1.5
+  lang: rus_Cyrl
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 42410
+  seq_len: 512
+  steps: 1049
+  warmup_steps: 31
+  content_fraction: 0.6703084832904884
+  train_tokens: 34373632
+  train_bytes: 244381520
+  r_measured: 1.0
+  parent: rus_Cyrl-S-r1-main-s0
+  branch_step: 839
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-S-r1-main-s0-identity_2.25
+  lang: rus_Cyrl
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 42410
+  seq_len: 512
+  steps: 702
+  warmup_steps: 31
+  content_fraction: 0.44874274661508706
+  train_tokens: 23003136
+  train_bytes: 163602934
+  r_measured: 1.0
+  parent: rus_Cyrl-S-r1-main-s0
+  branch_step: 562
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -3512,7 +4348,9 @@
   keep_ckpts:
   - 157
   - 313
+  - 562
   - 626
+  - 839
   controls:
   - shuffle
   - stride
@@ -3577,6 +4415,48 @@
   r_measured: 1.0
   parent: rus_Cyrl-S-r1-main-s1
   branch_step: 626
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-S-r1-main-s1-identity_1.5
+  lang: rus_Cyrl
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 42410
+  seq_len: 512
+  steps: 1049
+  warmup_steps: 31
+  content_fraction: 0.6703084832904884
+  train_tokens: 34373632
+  train_bytes: 244381520
+  r_measured: 1.0
+  parent: rus_Cyrl-S-r1-main-s1
+  branch_step: 839
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-S-r1-main-s1-identity_2.25
+  lang: rus_Cyrl
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 42410
+  seq_len: 512
+  steps: 702
+  warmup_steps: 31
+  content_fraction: 0.44874274661508706
+  train_tokens: 23003136
+  train_bytes: 163602934
+  r_measured: 1.0
+  parent: rus_Cyrl-S-r1-main-s1
+  branch_step: 562
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -3714,7 +4594,9 @@
   keep_ckpts:
   - 157
   - 313
+  - 562
   - 626
+  - 839
   controls:
   - shuffle
   - stride
@@ -3779,6 +4661,48 @@
   r_measured: 1.0
   parent: rus_Cyrl-S-r1-main-s2
   branch_step: 626
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-S-r1-main-s2-identity_1.5
+  lang: rus_Cyrl
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 42410
+  seq_len: 512
+  steps: 1049
+  warmup_steps: 31
+  content_fraction: 0.6703084832904884
+  train_tokens: 34373632
+  train_bytes: 244381520
+  r_measured: 1.0
+  parent: rus_Cyrl-S-r1-main-s2
+  branch_step: 839
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: rus_Cyrl-S-r1-main-s2-identity_2.25
+  lang: rus_Cyrl
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/rus_Cyrl/r1
+  n_docs: 42410
+  seq_len: 512
+  steps: 702
+  warmup_steps: 31
+  content_fraction: 0.44874274661508706
+  train_tokens: 23003136
+  train_bytes: 163602934
+  r_measured: 1.0
+  parent: rus_Cyrl-S-r1-main-s2
+  branch_step: 562
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -3916,7 +4840,9 @@
   keep_ckpts:
   - 133
   - 266
+  - 470
   - 533
+  - 705
   controls:
   - shuffle
   - stride
@@ -3981,6 +4907,48 @@
   r_measured: 1.0
   parent: arb_Arab-S-r1-main-s0
   branch_step: 533
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-S-r1-main-s0-identity_1.5
+  lang: arb_Arab
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 58229
+  seq_len: 512
+  steps: 881
+  warmup_steps: 27
+  content_fraction: 0.6616989567809239
+  train_tokens: 28868608
+  train_bytes: 193881912
+  r_measured: 1.0
+  parent: arb_Arab-S-r1-main-s0
+  branch_step: 705
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-S-r1-main-s0-identity_2.25
+  lang: arb_Arab
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 58229
+  seq_len: 512
+  steps: 588
+  warmup_steps: 27
+  content_fraction: 0.44146159582401195
+  train_tokens: 19267584
+  train_bytes: 129350995
+  r_measured: 1.0
+  parent: arb_Arab-S-r1-main-s0
+  branch_step: 470
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -4095,7 +5063,9 @@
   keep_ckpts:
   - 133
   - 266
+  - 470
   - 533
+  - 705
   controls:
   - shuffle
   - stride
@@ -4160,6 +5130,48 @@
   r_measured: 1.0
   parent: arb_Arab-S-r1-main-s1
   branch_step: 533
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-S-r1-main-s1-identity_1.5
+  lang: arb_Arab
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 58229
+  seq_len: 512
+  steps: 881
+  warmup_steps: 27
+  content_fraction: 0.6616989567809239
+  train_tokens: 28868608
+  train_bytes: 193881912
+  r_measured: 1.0
+  parent: arb_Arab-S-r1-main-s1
+  branch_step: 705
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-S-r1-main-s1-identity_2.25
+  lang: arb_Arab
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 58229
+  seq_len: 512
+  steps: 588
+  warmup_steps: 27
+  content_fraction: 0.44146159582401195
+  train_tokens: 19267584
+  train_bytes: 129350995
+  r_measured: 1.0
+  parent: arb_Arab-S-r1-main-s1
+  branch_step: 470
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -4274,7 +5286,9 @@
   keep_ckpts:
   - 133
   - 266
+  - 470
   - 533
+  - 705
   controls:
   - shuffle
   - stride
@@ -4339,6 +5353,48 @@
   r_measured: 1.0
   parent: arb_Arab-S-r1-main-s2
   branch_step: 533
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-S-r1-main-s2-identity_1.5
+  lang: arb_Arab
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 58229
+  seq_len: 512
+  steps: 881
+  warmup_steps: 27
+  content_fraction: 0.6616989567809239
+  train_tokens: 28868608
+  train_bytes: 193881912
+  r_measured: 1.0
+  parent: arb_Arab-S-r1-main-s2
+  branch_step: 705
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: arb_Arab-S-r1-main-s2-identity_2.25
+  lang: arb_Arab
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/arb_Arab/r1
+  n_docs: 58229
+  seq_len: 512
+  steps: 588
+  warmup_steps: 27
+  content_fraction: 0.44146159582401195
+  train_tokens: 19267584
+  train_bytes: 129350995
+  r_measured: 1.0
+  parent: arb_Arab-S-r1-main-s2
+  branch_step: 470
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -4453,7 +5509,9 @@
   keep_ckpts:
   - 136
   - 273
+  - 482
   - 546
+  - 725
   controls:
   - shuffle
   - stride
@@ -4518,6 +5576,48 @@
   r_measured: 1.0
   parent: cmn_Hani-S-r1-main-s0
   branch_step: 546
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-S-r1-main-s0-identity_1.5
+  lang: cmn_Hani
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 45241
+  seq_len: 512
+  steps: 906
+  warmup_steps: 27
+  content_fraction: 0.6649597659107535
+  train_tokens: 29687808
+  train_bytes: 124480670
+  r_measured: 1.0
+  parent: cmn_Hani-S-r1-main-s0
+  branch_step: 725
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-S-r1-main-s0-identity_2.25
+  lang: cmn_Hani
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 45241
+  seq_len: 512
+  steps: 603
+  warmup_steps: 27
+  content_fraction: 0.44233576642335765
+  train_tokens: 19759104
+  train_bytes: 82805389
+  r_measured: 1.0
+  parent: cmn_Hani-S-r1-main-s0
+  branch_step: 482
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -4632,7 +5732,9 @@
   keep_ckpts:
   - 136
   - 273
+  - 482
   - 546
+  - 725
   controls:
   - shuffle
   - stride
@@ -4697,6 +5799,48 @@
   r_measured: 1.0
   parent: cmn_Hani-S-r1-main-s1
   branch_step: 546
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-S-r1-main-s1-identity_1.5
+  lang: cmn_Hani
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 45241
+  seq_len: 512
+  steps: 906
+  warmup_steps: 27
+  content_fraction: 0.6649597659107535
+  train_tokens: 29687808
+  train_bytes: 124480670
+  r_measured: 1.0
+  parent: cmn_Hani-S-r1-main-s1
+  branch_step: 725
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-S-r1-main-s1-identity_2.25
+  lang: cmn_Hani
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 45241
+  seq_len: 512
+  steps: 603
+  warmup_steps: 27
+  content_fraction: 0.44233576642335765
+  train_tokens: 19759104
+  train_bytes: 82805389
+  r_measured: 1.0
+  parent: cmn_Hani-S-r1-main-s1
+  branch_step: 482
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -4811,7 +5955,9 @@
   keep_ckpts:
   - 136
   - 273
+  - 482
   - 546
+  - 725
   controls:
   - shuffle
   - stride
@@ -4876,6 +6022,48 @@
   r_measured: 1.0
   parent: cmn_Hani-S-r1-main-s2
   branch_step: 546
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-S-r1-main-s2-identity_1.5
+  lang: cmn_Hani
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 45241
+  seq_len: 512
+  steps: 906
+  warmup_steps: 27
+  content_fraction: 0.6649597659107535
+  train_tokens: 29687808
+  train_bytes: 124480670
+  r_measured: 1.0
+  parent: cmn_Hani-S-r1-main-s2
+  branch_step: 725
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: cmn_Hani-S-r1-main-s2-identity_2.25
+  lang: cmn_Hani
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/cmn_Hani/r1
+  n_docs: 45241
+  seq_len: 512
+  steps: 603
+  warmup_steps: 27
+  content_fraction: 0.44233576642335765
+  train_tokens: 19759104
+  train_bytes: 82805389
+  r_measured: 1.0
+  parent: cmn_Hani-S-r1-main-s2
+  branch_step: 482
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -4990,7 +6178,9 @@
   keep_ckpts:
   - 126
   - 254
+  - 454
   - 507
+  - 678
   controls:
   - shuffle
   - stride
@@ -5055,6 +6245,48 @@
   r_measured: 1.0
   parent: tam_Taml-S-r1-main-s0
   branch_step: 507
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-S-r1-main-s0-identity_1.5
+  lang: tam_Taml
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 75631
+  seq_len: 512
+  steps: 847
+  warmup_steps: 25
+  content_fraction: 0.6685126582278481
+  train_tokens: 27754496
+  train_bytes: 364888753
+  r_measured: 1.0
+  parent: tam_Taml-S-r1-main-s0
+  branch_step: 678
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-S-r1-main-s0-identity_2.25
+  lang: tam_Taml
+  model: S
+  seed: 0
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 75631
+  seq_len: 512
+  steps: 567
+  warmup_steps: 25
+  content_fraction: 0.44753577106518283
+  train_tokens: 18579456
+  train_bytes: 244274760
+  r_measured: 1.0
+  parent: tam_Taml-S-r1-main-s0
+  branch_step: 454
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -5169,7 +6401,9 @@
   keep_ckpts:
   - 126
   - 254
+  - 454
   - 507
+  - 678
   controls:
   - shuffle
   - stride
@@ -5234,6 +6468,48 @@
   r_measured: 1.0
   parent: tam_Taml-S-r1-main-s1
   branch_step: 507
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-S-r1-main-s1-identity_1.5
+  lang: tam_Taml
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 75631
+  seq_len: 512
+  steps: 847
+  warmup_steps: 25
+  content_fraction: 0.6685126582278481
+  train_tokens: 27754496
+  train_bytes: 364888753
+  r_measured: 1.0
+  parent: tam_Taml-S-r1-main-s1
+  branch_step: 678
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-S-r1-main-s1-identity_2.25
+  lang: tam_Taml
+  model: S
+  seed: 1
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 75631
+  seq_len: 512
+  steps: 567
+  warmup_steps: 25
+  content_fraction: 0.44753577106518283
+  train_tokens: 18579456
+  train_bytes: 244274760
+  r_measured: 1.0
+  parent: tam_Taml-S-r1-main-s1
+  branch_step: 454
   keep_ckpts: []
   controls: []
   overrides: {}
@@ -5348,7 +6624,9 @@
   keep_ckpts:
   - 126
   - 254
+  - 454
   - 507
+  - 678
   controls:
   - shuffle
   - stride
@@ -5413,6 +6691,48 @@
   r_measured: 1.0
   parent: tam_Taml-S-r1-main-s2
   branch_step: 507
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-S-r1-main-s2-identity_1.5
+  lang: tam_Taml
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_1.5
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 75631
+  seq_len: 512
+  steps: 847
+  warmup_steps: 25
+  content_fraction: 0.6685126582278481
+  train_tokens: 27754496
+  train_bytes: 364888753
+  r_measured: 1.0
+  parent: tam_Taml-S-r1-main-s2
+  branch_step: 678
+  keep_ckpts: []
+  controls: []
+  overrides: {}
+- name: tam_Taml-S-r1-main-s2-identity_2.25
+  lang: tam_Taml
+  model: S
+  seed: 2
+  level: 1.0
+  tokenizer: main
+  endpoint: identity_2.25
+  shard_dir: data/shards/tam_Taml/r1
+  n_docs: 75631
+  seq_len: 512
+  steps: 567
+  warmup_steps: 25
+  content_fraction: 0.44753577106518283
+  train_tokens: 18579456
+  train_bytes: 244274760
+  r_measured: 1.0
+  parent: tam_Taml-S-r1-main-s2
+  branch_step: 454
   keep_ckpts: []
   controls: []
   overrides: {}

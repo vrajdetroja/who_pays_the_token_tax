@@ -6,6 +6,9 @@ much vocabulary the tokenizer allocates (1×, 1.5× and 2.25× tokens per byte),
 training budget and the context window both in tokens and in bytes. It asks how much of the
 quality penalty is fertility itself, and how much is token-denominated accounting.
 
+The hypotheses, design and analysis plan are in [PREREGISTRATION.md](PREREGISTRATION.md),
+committed before any model was trained; any later change is a dated amendment in the same file.
+
 ## The design in one table
 
 Per (language, model, seed): three dose levels on byte-identical training text, every causal

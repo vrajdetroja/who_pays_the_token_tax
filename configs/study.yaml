@@ -46,12 +46,13 @@ training:
   decay_frac: 0.2 # WSD: linear cooldown to zero over the final 20% of every endpoint
   dtype: bf16
   pos_type: rope
+  mask_unreachable: true # decision 6: rows a level cannot produce are excluded from the softmax
 
 endpoints:
   data_curve_fractions: [0.125, 0.25, 0.5] # cooldown branches of the level-1.0 run
-  # Optional, preregister before the main grid if used: branches at exactly 1/r of the
-  # content give a direct (not interpolated) test of the accounting identity.
-  identity_fractions: []
+  # Decision 4: cooldown branches of the reference that read exactly the bytes each level's
+  # as-deployed branch reads: the matched test of the accounting identity (H3).
+  identity_branches: true
 
 evaluation:
   context_stride_frac: 0.5 # sliding windows: score the last half of each window
@@ -67,12 +68,12 @@ analysis:
   bootstrap_seed: 0
 
 # Numeric predictions, as [low, high], mirrored from PREREGISTRATION.md §2 so the analysis
-# can report which held. Fill in YOUR OWN ranges before the scout; null = not predicted.
+# reports which held. Committed with the preregistration on 2026-10-29.
 predictions:
-  share_2.25: null # H1: S at r = 2.25, model M
-  D_tt_2.25: null # H2: as-deployed penalty (BPB)
-  D_bb_2.25: null # H2: content-matched residual (BPB)
-  identity_ratio_2.25: null # H3: budget channel / (b ln r); the band is [0.7, 1.3]
+  share_2.25: [0.25, 0.80] # H1: S at r = 2.25, model M (point prediction 0.50)
+  D_tt_2.25: [0.04, 0.20] # H2: as-deployed penalty (BPB)
+  D_bb_2.25: [0.01, 0.10] # H2: content-matched residual (BPB)
+  identity_ratio_2.25: [0.70, 1.30] # H3: budget channel / its matched prediction
 
 # The scout (pilot): measures the learning rate, seed noise, and the controls at 20% of the
 # content, before the main grid is frozen. It trains no deployed branches.
