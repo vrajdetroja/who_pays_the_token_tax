@@ -2,6 +2,7 @@
 
     python -m recount.train.plan --grid main  --out queues/main.yaml
     python -m recount.train.plan --grid scout --out queues/scout.yaml
+    python -m recount.train.plan --grid scout2 --out queues/scout2.yaml   # amendment 1
 
 Per (language, model, seed) unit, with W = 64 windows per step and L_r = round(512 r):
 
@@ -174,6 +175,14 @@ def grid(study: Study, root: Path, which: str, langs: list[str] | None = None, m
             jobs += unit_jobs(study, root, study.tokenizer["swap_language"], "M", seed, [study.tokenizer["swap_level"]],
                               sc["content_scale"], curve=False, deployed=False, swap=True, tag="-scout")
         return jobs
+    if which == "scout2":  # amendment 1: seed noise and data curve again, at the amended learning rate
+        sc = study.scout
+        lo, hi = min(study.levels), max(study.levels)
+        for lang in sc["variance_languages"]:
+            for seed in sc["seeds"]:
+                jobs += unit_jobs(study, root, lang, "M", seed, [lo, hi], sc["content_scale"], deployed=False,
+                                  tag="-scout2")
+        return jobs
     raise ValueError(f"unknown grid {which!r}")
 
 
@@ -188,7 +197,7 @@ def load(path: Path) -> list[Job]:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--grid", default="main", choices=["main", "scout"])
+    ap.add_argument("--grid", default="main", choices=["main", "scout", "scout2"])
     ap.add_argument("--study", default="configs/study.yaml")
     ap.add_argument("--root", default=".")
     ap.add_argument("--langs", nargs="*")

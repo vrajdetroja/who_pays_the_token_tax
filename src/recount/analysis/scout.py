@@ -1,6 +1,10 @@
 """The scout report: everything the pilot decision needs, nothing sealed.
 
     python -m recount.analysis.scout --runs results/scout_runs.csv
+    python -m recount.analysis.scout --runs results/scout2_runs.csv --name scout2   # amendment 1
+
+The first scout's untagged runs used the learning rate before amendment 1: reproduce its
+report with `--default-lr 2e-3`.
 
 Printed: the learning-rate check (each LR's BPB
 *relative to the best LR at the same level*, never across levels), seed noise of the paired
@@ -47,12 +51,15 @@ def main() -> None:
     ap.add_argument("--runs", default="results/scout_runs.csv")
     ap.add_argument("--study", default="configs/study.yaml")
     ap.add_argument("--root", default=".")
+    ap.add_argument("--name", default="scout", help="seal name: sealed/<name>.json, results/seals/<name>.sha256")
+    ap.add_argument("--default-lr", type=float, default=None,
+                    help="learning rate of the runs without an '+lr=' tag (default: the study's)")
     args = ap.parse_args()
     study = load_study(args.study)
     root = Path(args.root)
     runs = runs_table.load(args.runs)
     print("\n== learning-rate check (BPB minus the best LR at the same level; across-level numbers withheld)")
-    lrc = lr_check(runs, study.training["lr"])
+    lrc = lr_check(runs, args.default_lr or study.training["lr"])
     print(lrc.to_string(index=False, float_format=lambda x: f"{x:.4f}") if len(lrc) else "  no LR-check runs")
 
     print("\n== seed noise and controls (level-contrast means are sealed)")
@@ -81,8 +88,8 @@ def main() -> None:
         if "estimate" in v:  # pooled shuffle effect: within an endpoint, safe to show
             v = {kk: v[kk] for kk in ("estimate", "lo", "hi", "informative")}
         print(f"  {k}: " + json.dumps({a: (round(b, 5) if isinstance(b, float) else b) for a, b in v.items()}))
-    digest = A.seal(sealed, "scout", root)
-    print(f"  sealed level contrasts: sha256 {digest} (results/seals/scout.sha256)")
+    digest = A.seal(sealed, args.name, root)
+    print(f"  sealed level contrasts: sha256 {digest} (results/seals/{args.name}.sha256)")
 
     print("\n== dose accuracy (held-out r within ±3% of target)")
     for rep in sorted((root / "data" / "tokenizers").glob("*/dose_report.json")):

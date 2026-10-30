@@ -247,4 +247,44 @@ Taken before any model of this study was trained, with the evidence then in hand
 
 ## Amendments
 
-<date> — what changed — why — what I had seen when I changed it
+Each: date, what changed, why, and what I had seen when I changed it.
+
+### 1 · 2026-10-30, after the scout: learning rate 1e-3 at every level; a second scout
+
+**What I had seen.** The scout report (`python -m recount.analysis.scout`), with every level
+contrast's mean sealed unopened (`sealed/scout.json`; SHA-256 `793adb508f6328cf…` in
+`results/seals/scout.sha256`):
+
+- Dose accuracy: every tokenizer within ±3% of its target on held-out text.
+- Negative 2 (stride): at most 0.00098 BPB apart; passes, narrowly.
+- Positive 1 (data curve): falls in every unit; slope b = 0.218 BPB per e-fold, so the SESOI is
+  0.023 BPB (§6 assumed b ≈ 0.07 and a SESOI of 0.0074).
+- Negative 1 (swap): +0.026 BPB, 95% interval −0.19 to +0.25 from 2 seeds; inside seed noise,
+  and uninformative.
+- Positive 2 (shuffle): shuffling the context raised BPB at all 32 endpoints, by 0.044 (Basque),
+  0.017 (Russian) and 0.008 (Tamil) on average; pooled +0.023 [−0.024, 0.070], not above the
+  SESOI.
+- Learning rate (Tamil, seed 0; BPB minus the best rate at the same level): at r = 1.0, 2e-3
+  best, 1e-3 +0.001, 4e-3 +0.043; at r = 2.25, 1e-3 best, 2e-3 +0.102, 4e-3 +0.120.
+- Seed noise at r = 2.25, from runs at the default 2e-3: σΔ = 0.015 BPB for D(byte, byte) and
+  0.014 for D(byte, tok); τ = 0.15 from two languages (§6 assumed σΔ ≈ 0.002, τ 0.004–0.008).
+
+**What changed, and why.**
+
+1. **Learning rate 1e-3 at every level** (was the default, 2e-3). It is the best rate at
+   r = 2.25, where 2e-3 costs 0.10 BPB, and within 0.001 BPB of the best at r = 1.0, inside one
+   seed's noise. The main grid trains five times longer than the scout, which favors the lower
+   rate, and one rate for every level keeps the level contrast free of a learning-rate
+   difference; each level's own best (the other option) would also leave r = 1.5
+   untested.
+2. **A second scout before the main grid**: `queues/scout2.yaml`, 30 jobs: the seed-noise and
+   data-curve units again (Basque and Tamil, model M, seeds 0–2, r = 1.0 and 2.25, 20% of the
+   content) at the new rate. The first scout's σΔ and τ come from
+   r = 2.25 runs trained 0.10 BPB away from their best rate, so they cannot set the seed
+   decision or the power table. Its level contrasts are sealed the same way
+   (`sealed/scout2.json`).
+
+**Still to come, in amendment 2 before the main grid:** the planned seed decision on the new
+σΔ (above 0.005 BPB: drop the S grid and give model M two more seeds), the power table
+recomputed with the measured σΔ, τ and SESOI, and the frozen design. Positive 2 is decided as
+§5 says, on the main grid's pooled rise.

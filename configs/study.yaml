@@ -37,7 +37,7 @@ training:
   base_seq_len: 512 # level r trains on round(512 * r) tokens: byte-matched windows
   windows_per_step: 64
   optimizer: adamw
-  lr: 2.0e-3 # set by the scout's LR check (1e-3 / 2e-3 / 4e-3); amendment if per-level
+  lr: 1.0e-3 # amendment 1 (2026-10-30): the scout's best at r = 2.25, within 0.001 BPB of the best at r = 1.0; was 2.0e-3
   beta1: 0.9
   beta2: 0.95
   weight_decay: 0.1

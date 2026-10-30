@@ -5,7 +5,7 @@ PY ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python)
 LANGS := eus_Latn rus_Cyrl arb_Arab cmn_Hani tam_Taml
 SCRATCH ?= /tmp/recount-smoke
 
-.PHONY: test smoke sim power data tokenizers table1 plan-scout plan-main analysis figures
+.PHONY: test smoke sim power data tokenizers table1 plan-scout plan-scout2 plan-main analysis figures
 
 test:                ## unit tests: vendored microlm (107) + recount
 	$(PY) -m pytest
@@ -31,6 +31,9 @@ table1:              ## token premiums of production tokenizers on FLORES-200
 
 plan-scout:          ## the pilot (scout) queue
 	$(PY) -m recount.train.plan --grid scout --out queues/scout.yaml
+
+plan-scout2:         ## the second scout (amendment 1): seed noise and data curve at the amended LR
+	$(PY) -m recount.train.plan --grid scout2 --out queues/scout2.yaml
 
 plan-main:           ## the main grid queue
 	$(PY) -m recount.train.plan --grid main --out queues/main.yaml
