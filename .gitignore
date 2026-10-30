@@ -10,5 +10,6 @@ __pycache__/
 /logs/
 /wandb/
 # Level contrasts computed before the main analysis. Only their SHA-256 is committed
-# (sealed/*.sha256 lives in results/seals/), never the numbers.
+# (sealed/*.sha256 lives in results/seals/) until the main analysis has run; then the
+# opened file is added with `git add -f`, so anyone can check it against that hash.
 /sealed/
