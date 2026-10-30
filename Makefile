@@ -1,6 +1,7 @@
 # Every stage of the study, in order. Training (the pilot and the main grid) needs a GPU;
 # everything else runs on a CPU. Python reading downloaded data runs with -I.
-PY := .venv/bin/python
+# The local venv if there is one, else the Python on the PATH.
+PY ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python)
 LANGS := eus_Latn rus_Cyrl arb_Arab cmn_Hani tam_Taml
 SCRATCH ?= /tmp/recount-smoke
 

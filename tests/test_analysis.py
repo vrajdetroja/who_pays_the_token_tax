@@ -10,6 +10,7 @@ from recount.analysis import analyze as A
 from recount.analysis import decompose as D
 from recount.analysis.simulate import Truth, simulate
 from recount.analysis.stats import fit_log_slope, hksj, invert_ratio_test, pool, sesoi, t_interval, text_lost
+from recount.data import flores
 from recount.study import load_study
 
 
@@ -130,8 +131,9 @@ def test_runs_table_keeps_the_latest_evaluation(tmp_path):
         runs_table.append_rows(p, [base | {"bogus": 1}])
 
 
+@pytest.mark.skipif(not flores.ROOT.exists(), reason="needs the FLORES-200 download")
 def test_decontamination_flags_a_planted_flores_sentence():
-    from recount.data import decontam, flores
+    from recount.data import decontam
 
     ref = flores.load("eus_Latn", "devtest")[:50]
     clean = "Hau testu garbi bat da, ez du FLORESekin ezer partekatzen. " * 5

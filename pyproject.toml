@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "recount"
 version = "0.1.0"
 description = "The tokenization tax: fertility or accounting? A controlled decomposition in small LMs."
-requires-python = ">=3.10"
+requires-python = ">=3.12"  # numpy 2.5 and scipy 1.18 (requirements.txt) need 3.12
 dependencies = ["torch>=2.1", "numpy", "regex", "pyyaml", "tqdm"]
 
 [project.optional-dependencies]
