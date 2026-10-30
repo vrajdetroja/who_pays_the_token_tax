@@ -30,7 +30,9 @@ tokenizer:
 
 models:
   # english_equivalent_fraction scales `content` per model: S reads a third of M's text.
-  M: {n_layer: 6, d_model: 384, n_head: 6, english_equivalent_fraction: 1.0}
+  # seeds: amendment 2 (2026-10-30) gives M seeds 0-4 (scout 2's sigma_delta 0.0116 > 0.005);
+  # S keeps the study's seeds below.
+  M: {n_layer: 6, d_model: 384, n_head: 6, english_equivalent_fraction: 1.0, seeds: [0, 1, 2, 3, 4]}
   S: {n_layer: 4, d_model: 256, n_head: 4, english_equivalent_fraction: 0.3333333333}
 
 training:

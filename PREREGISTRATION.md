@@ -288,3 +288,53 @@ contrast's mean sealed unopened (`sealed/scout.json`; SHA-256 `793adb508f6328cf�
 σΔ (above 0.005 BPB: drop the S grid and give model M two more seeds), the power table
 recomputed with the measured σΔ, τ and SESOI, and the frozen design. Positive 2 is decided as
 §5 says, on the main grid's pooled rise.
+
+### 2 · 2026-10-30, after the second scout: model M takes seeds 0–4; the design is frozen
+
+**What I had seen.** The second scout (30 jobs at learning rate 1e-3; report
+`python -m recount.analysis.scout --runs results/scout2_runs.csv --name scout2`), with every
+level contrast's mean sealed unopened (`sealed/scout2.json`; SHA-256 `b654747af88e9516…` in
+`results/seals/scout2.sha256`). Neither scout's seal has been opened.
+
+- Seed noise at r = 2.25: σΔ = 0.0116 BPB for D(byte, byte) and 0.0114 for D(byte, tok);
+  τ = 0, i.e. no spread between Basque and Tamil beyond seed noise (it was 0.15 at the old rate).
+- Positive 1 (data curve): falls in every unit; b = 0.182 BPB per e-fold, so the SESOI is
+  0.019 BPB.
+- Negative 2 (stride): at most 0.00031 BPB apart.
+- Positive 2 (shuffle): pooled +0.021 [−0.041, 0.082], not above the SESOI.
+- Power, recomputed as §6 says (`results/power_amendment2.csv`: σΔ = 0.0116, SESOI = 0.019,
+  5 languages, 2,000 replicates per cell; τ = 0.004 and 0.008 kept because two languages cannot
+  pin it down):
+
+| true D(tok, tok) | τ | seeds | TOST passes when residual = 0 | H1 falsified when S = 0.3 | H1 falsified when S = 0.5 (size) | coverage |
+|---|---|---|---|---|---|---|
+| 0.08 | 0 | 3 | 1.00 | 0.99 | 0.02 | 0.95 |
+| 0.08 | 0 | 5 | 1.00 | 1.00 | 0.02 | 0.95 |
+| 0.08 | 0.004 | 3 | 1.00 | 0.97 | 0.02 | 0.95 |
+| 0.08 | 0.004 | 5 | 1.00 | 1.00 | 0.02 | 0.95 |
+| 0.08 | 0.008 | 3 | 0.92 | 0.83 | 0.02 | 0.96 |
+| 0.08 | 0.008 | 5 | 0.95 | 0.90 | 0.02 | 0.94 |
+| 0.04 | 0 | 3 | 1.00 | 0.64 | 0.02 | 0.95 |
+| 0.04 | 0 | 5 | 1.00 | 0.84 | 0.02 | 0.95 |
+| 0.04 | 0.004 | 3 | 1.00 | 0.52 | 0.02 | 0.95 |
+| 0.04 | 0.004 | 5 | 1.00 | 0.67 | 0.02 | 0.95 |
+| 0.04 | 0.008 | 3 | 0.92 | 0.33 | 0.02 | 0.96 |
+| 0.04 | 0.008 | 5 | 0.95 | 0.39 | 0.02 | 0.94 |
+
+**What changed, and why.**
+
+1. **Model M takes seeds 0–4; model S keeps 0–2.** σΔ is above the planned line of 0.005 BPB,
+   whose prescription is two more seeds for M, paid for by dropping S. The recomputed power shows
+   what they buy: at the prior's centre, D(tok, tok) = 0.08, three seeds already falsify H1 at
+   S = 0.3 with power 0.83–0.99; at its low end, 0.04, five seeds raise that from 0.64 to 0.84
+   (τ = 0) and from 0.52 to 0.67 (τ = 0.004). Dropping S would lose the study's only check across
+   model size, so S stays, at three seeds.
+2. **§9's "exactly 3 seeds per (language, level, size)" becomes 5 for M and 3 for S.** This
+   departs from §9's "no seeds added after any level contrast has been computed": both scouts
+   did compute level contrasts. Both are sealed and unopened, and the decision uses only noise
+   (σΔ, τ) and power, the scout outcome the plan anticipated (σΔ above 0.005:
+   seeds four and five for M).
+3. **The design is frozen**: `queues/main.yaml`, 408 jobs (M 255, S 153), 24.1B training tokens,
+   learning rate 1e-3 at every level (amendment 1). Everything else stands as registered:
+   languages, levels, endpoints, controls, the analysis plan and the predictions; positive 2 is
+   decided on the main grid's pooled rise (§5).

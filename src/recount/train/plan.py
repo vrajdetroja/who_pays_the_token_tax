@@ -149,13 +149,12 @@ def grid(study: Study, root: Path, which: str, langs: list[str] | None = None, m
          seeds: list[int] | None = None) -> list[Job]:
     """`main`: the preregistered grid. `scout`: the pilot, at 20% of the content (no
     deployed branches, so no level contrast exists to peek at beyond the sealed one)."""
-    seeds = seeds if seeds is not None else list(study.seeds)
     models = models or list(study.models)
     jobs: list[Job] = []
     if which == "main":
         for model in models:
             for lang in langs or list(study.languages):
-                for seed in seeds:
+                for seed in seeds if seeds is not None else study.seeds_for(model):
                     swap = lang == study.tokenizer["swap_language"]
                     jobs += unit_jobs(study, root, lang, model, seed, study.levels, swap=swap)
         return jobs

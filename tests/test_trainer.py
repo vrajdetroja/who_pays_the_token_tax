@@ -1,3 +1,4 @@
+import dataclasses
 import json
 import random
 
@@ -164,3 +165,11 @@ def test_identity_branches_read_what_the_deployed_branches_read(smoke_root):
         assert ident.parent == ref.name and ident.branch_step in ref.keep_ckpts
         assert abs(ident.content_fraction - dep.content_fraction) < 1e-12
         assert abs(ident.steps - dep.content_fraction * ref.steps) <= 1
+
+
+def test_a_model_can_take_its_own_seeds(smoke_root):
+    root, study = smoke_root
+    study = dataclasses.replace(study, models=study.models | {"M": study.models["M"] | {"seeds": [0, 1, 2]}})
+    jobs = plan.grid(study, root, "main", langs=["smk_Cyrl"])
+    seeds = {m: sorted({j.seed for j in jobs if j.model == m}) for m in ("M", "S")}
+    assert seeds == {"M": [0, 1, 2], "S": list(study.seeds)}

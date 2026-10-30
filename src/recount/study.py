@@ -33,6 +33,10 @@ class Study:
         """Byte-matched training window: round(512 * r) tokens."""
         return int(round(self.training["base_seq_len"] * level))
 
+    def seeds_for(self, model: str) -> list[int]:
+        """A model's seeds: its own list when it has one (amendment 2), else the study's."""
+        return list(self.models[model].get("seeds", self.seeds))
+
 
 def load_study(path: str | Path = DEFAULT) -> Study:
     d = load_yaml(path)
