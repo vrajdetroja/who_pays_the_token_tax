@@ -338,3 +338,57 @@ level contrast's mean sealed unopened (`sealed/scout2.json`; SHA-256 `b654747af8
    learning rate 1e-3 at every level (amendment 1). Everything else stands as registered:
    languages, levels, endpoints, controls, the analysis plan and the predictions; positive 2 is
    decided on the main grid's pooled rise (§5).
+
+### 3 · 2026-10-31, after the main analysis: the XGLM check (exploratory)
+
+**What I had seen.** The whole main analysis (`results/analysis.json`) and
+the appendix tables (`results/appendix/`): content accounting removes S = 0.75 [0.69, 0.89] of
+model M's penalty at r = 2.25, and the content-matched residual is D(byte, byte) = 0.039 BPB
+[0.007, 0.070] for M and 0.072 [0.012, 0.133] for S. Both scouts' seals are open. No XGLM model
+has been run. The only XGLM numbers I have seen come from its tokenizer: Table 1's token premiums
+for 12 languages (2026-10-29) and, while writing this, its settings (a unigram model over 256,008
+entries with no byte fallback, so unknown characters become `<unk>`). From FLORES and the tool's
+table I have also seen the 30 languages' bytes per sentence and byte premiums.
+
+**What I will run.** An external check, exploratory throughout, reported apart from
+the confirmatory results:
+
+- **Models:** XGLM-564M and XGLM-1.7B (Lin et al., 2022; MIT), the Hugging Face checkpoints
+  `facebook/xglm-564M` at revision `f3059f01` and `facebook/xglm-1.7B` at `d23a5e8e`; inference
+  only, fp32.
+- **Languages:** XGLM's 30 training languages (its model card). All 30 have FLORES-200 devtest and
+  a byte premium in the tool's table. FLORES+ is gated; FLORES-200 is the release the rest of
+  the study uses.
+- **Outcome:** bits per sentence on FLORES-200 devtest: each of the 1,012 sentences scored alone
+  after XGLM's `</s>`, under the model's own tokenization, averaged over sentences. FLORES is
+  parallel, so every language scores the same content.
+- **Regressors:** x_data = ln(T · b / p), the English-equivalent text seen in training, where
+  T = 500B × the card's upsampled share (the language's XGLM tokens seen in training), b is UTF-8
+  bytes per XGLM token on FLORES devtest, and p is the tool's byte premium (decision 5).
+  x_fert = ln(the token premium against English under XGLM's tokenizer on FLORES devtest).
+- **Fit:** OLS of bits per sentence on [1, x_data, x_fert] over the 30 languages, one fit per
+  model, with HC3 standard errors and t intervals on n − k degrees of freedom (27). Reported:
+  β_fert and β_data with 95% intervals, and the fit on [1, x_fert] beside it.
+- **Positive control:** β_data < 0 (more content seen, fewer bits). If its 95% interval does not
+  lie below 0, the fit cannot tell data from fertility, and β_fert is called inconclusive
+  whatever its interval.
+- **Sensitivity analyses:** the FLORES-direct byte premiums in place of the tool's (they differ
+  most for Burmese: 3.52 against 5.10), and the fit without any language where more than 1% of
+  the tokens are `<unk>`. The `<unk>` share is reported for every language.
+
+**Prediction, written before running.** At matched content, the controlled study's residual is
+positive, so β_fert > 0. Size: the residual per e-fold of dose is 0.039 / ln 2.26 ≈ 0.05 BPB for
+M (17M parameters) and 0.072 / ln 2.26 ≈ 0.09 for S. These languages' FLORES sentences average
+209 bytes (119–460), so at M's scale that is about 10 bits per sentence per e-fold of premium,
+and less at XGLM's if M's residual being below S's carries on with scale. XGLM's 2,048-token
+window never binds on one sentence, so the context channel plays no part. The sign agrees if
+β_fert's 95% interval lies above 0, disagrees if it lies below, and is inconclusive otherwise;
+the size is compared descriptively.
+
+**Known confounds**, which make this a plausibility check and not a test: languages differ in
+more than fertility (morphology, script, the quality of their web text and of FLORES's
+translations); XGLM's tokenizer was trained on the upsampled data, so fertility partly follows
+data; x_data and x_fert are correlated across languages; the tokenizer's Unicode normalization
+changes some characters before scoring. Thirty points, two regressors.
+
+**Compute:** inference only, in fp32, on an Apple M3 (MPS).
