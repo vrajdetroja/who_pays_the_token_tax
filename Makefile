@@ -5,7 +5,7 @@ PY ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python)
 LANGS := eus_Latn rus_Cyrl arb_Arab cmn_Hani tam_Taml
 SCRATCH ?= /tmp/recount-smoke
 
-.PHONY: test smoke sim power data tokenizers table1 plan-scout plan-scout2 plan-main analysis figures
+.PHONY: test smoke sim power data tokenizers table1 plan-scout plan-scout2 plan-main analysis appendix figures
 
 test:                ## unit tests: vendored microlm (107) + recount
 	$(PY) -m pytest
@@ -37,6 +37,10 @@ plan-scout2:         ## the second scout (amendment 1): seed noise and data curv
 
 plan-main:           ## the main grid queue
 	$(PY) -m recount.train.plan --grid main --out queues/main.yaml
+
+appendix:            ## appendix tables from the real runs, and segmentation examples (needs data/)
+	$(PY) -m recount.analysis.appendix --runs results/all_runs.csv --out results/appendix
+	$(PY) -I -m recount.tok.examples --out results/appendix/segmentation.md
 
 analysis:            ## the preregistered analysis on real runs
 	$(PY) -m recount.analysis.analyze --runs results/all_runs.csv --out results/analysis.json

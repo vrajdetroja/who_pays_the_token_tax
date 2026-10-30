@@ -7,6 +7,7 @@ from scipy import stats as sst
 
 from recount import runs_table
 from recount.analysis import analyze as A
+from recount.analysis import appendix as AP
 from recount.analysis import decompose as D
 from recount.analysis.simulate import Truth, simulate
 from recount.analysis.stats import fit_log_slope, hksj, invert_ratio_test, pool, sesoi, t_interval, text_lost
@@ -150,3 +151,23 @@ def test_matched_identity_recovers_the_budget_channel_ratio(tmp_path, kappa):
     runs_table.append_rows(path, simulate(Truth(kappa=kappa), seed=2))
     lv = A.run(runs_table.load(path), load_study())["models"]["M"]["levels"]["2.25"]
     assert lv["identity_matched"]["ratio"] == pytest.approx(kappa, abs=0.12)
+
+
+def test_seeds_needed_matches_power_tables():
+    # One-sample t-test, effect = 1 SD, two-sided alpha 0.05, power 0.8: 10 (any power table).
+    assert AP.seeds_for_detection(1.0, 1.0) == 10
+    # Two one-sided tests at +-1 SD with a true effect of 0 need sqrt(n) >= t(0.95, n-1) + z(0.9).
+    assert AP.seeds_for_equivalence(1.0, 1.0) == 10
+    # A large effect (noncentrality near 12), where scipy's lower tail underflows to NaN.
+    assert AP.seeds_for_detection(0.0025, 0.0209) == 3
+
+
+def test_appendix_tables_cover_every_unit(sim_runs):
+    study = load_study("configs/study.yaml")
+    langs = sim_runs["lang"].nunique()
+    pl = AP.per_language(sim_runs)
+    assert len(pl) == 2 * 2 * langs and pl["share"].notna().all()
+    ctl = AP.controls(sim_runs, study.tokenizer["swap_level"])
+    assert len(ctl) == 2 * langs and ctl["curve_monotone"].le(ctl["seeds"]).all()
+    sn = AP.seeds_needed(sim_runs, {"M": 0.02, "S": 0.02})
+    assert len(sn) == 2 * langs and (sn["seeds_to_detect_sesoi"] >= 2).all()
