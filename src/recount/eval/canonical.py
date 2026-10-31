@@ -107,15 +107,22 @@ def allowed_tables(trie: dict, texts: bytes | list[bytes], device) -> tuple[torc
 def last_logits(lm: DoseLM, idx: torch.Tensor) -> torch.Tensor:
     """Masked next-token logits at the last position only: the full forward would project
     every position onto the vocabulary, which sampling never needs."""
+    return logits_at(lm, idx, torch.full((len(idx),), idx.shape[1] - 1, device=idx.device))
+
+
+def logits_at(lm: DoseLM, idx: torch.Tensor, last: torch.Tensor) -> torch.Tensor:
+    """Masked next-token logits at each row's own position `last`. Rows may be right-padded
+    past it: a causal model's position never sees the positions after it."""
     base, cfg = lm.base, lm.base.cfg
+    rows = torch.arange(len(idx), device=idx.device)
     if base.pos_emb is not None or cfg.pos_type == "sinusoidal":
-        logits = base(idx)[0][:, -1]
+        logits = base(idx)[0][rows, last]
     else:
         x = base.tok_emb(idx)
         ctx = base._context(idx.shape[1], idx.device, False, None)
         for block in base.blocks:
             x = block(x, ctx)
-        x = base.final_norm(x[:, -1])
+        x = base.final_norm(x[rows, last])
         w = base.tok_emb.weight if base.head is None else base.head.weight
         logits = F.linear(x, w[: cfg.vocab_size])
     logits = logits.float()

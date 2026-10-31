@@ -16,6 +16,8 @@ results/analysis.json. Each table is written as Markdown (for the paper) and CSV
                    per-language claim would need at this scale
     canonical_gap  per scored endpoint: how much canonical scoring overstates BPB, and how much
                    of that reaches the level contrast (recount.eval.canonical; once it has run)
+    canonical_beam the same by beam search (amendment 4; recount.eval.canonical_beam), with the
+                   wider beam on a subset and exact enumeration on sentence openings beside it
 """
 
 from __future__ import annotations
@@ -183,6 +185,48 @@ def canonical_gap(path: Path) -> pd.DataFrame:
     return t.assign(gap_minus_reference=t["gap_bpb"] - np.asarray(t.set_index(unit).index.map(ref), dtype=float))
 
 
+UNCONVERGED = (0.25, 0.00001)  # amendment 4: B = 64 raising the subset's gap by more than both
+
+
+def canonical_beam(beam_path: Path, openings_path: Path | None = None, beam: int = 16, check: int = 64) -> pd.DataFrame:
+    """Per scored endpoint, amendment 4's beam: the gap at `beam` over all its sentences and the
+    part that reaches D; on the check subset, the gap at `beam` and at `check` and whether
+    `beam` had converged there; and on the openings, the exact gap, the beam's gap, and the
+    share of the exact non-canonical probability the beam recovered (mean and lowest)."""
+    g = pd.read_csv(beam_path)
+    g = g[~g["untrained"].astype(str).str.lower().eq("true")]  # dry runs score fresh weights
+    if g.empty:
+        raise ValueError(f"{beam_path}: no rows from trained models")
+    ln2, key, unit = math.log(2), ["model", "seed", "lang", "level", "endpoint"], ["model", "seed", "lang"]
+
+    def gap(d: pd.DataFrame, col: str = "marginal_nats") -> float:
+        return (d["canonical_nats"] - d[col]).sum() / d["n_bytes"].sum() / ln2
+
+    t = apply(g[g["beam"] == beam], lambda d: {"sentences": len(d), "gap_bpb": gap(d)}, key)
+    ref = t[(t["level"] == 1.0) & (t["endpoint"] == "final")].set_index(unit)["gap_bpb"]
+    t["reaches_d"] = t["gap_bpb"] - np.asarray(t.set_index(unit).index.map(ref), dtype=float)
+    wide, narrow = g[g["beam"] == check], g[g["beam"] == beam]
+    if not wide.empty:
+        both = narrow.merge(wide[key + ["sentence"]], on=key + ["sentence"])
+        sub = apply(both, lambda d: {"check_sentences": len(d), "gap_check_narrow": gap(d)}, key).merge(
+            apply(wide, lambda d: {"gap_check_wide": gap(d)}, key), on=key)
+        rise = sub["gap_check_wide"] - sub["gap_check_narrow"]
+        sub["converged"] = ~((rise > UNCONVERGED[0] * sub["gap_check_narrow"]) & (rise > UNCONVERGED[1]))
+        t = t.merge(sub, on=key, how="left")
+    if openings_path is not None and Path(openings_path).exists():
+        o = pd.read_csv(openings_path)
+        o = o[~o["untrained"].astype(str).str.lower().eq("true") & (o["n_bytes"] > 0)]
+
+        def opened(d: pd.DataFrame) -> dict:
+            exact, got = np.expm1(d["canonical_nats"] - d["exact_nats"]), np.expm1(d["canonical_nats"] - d["beam_nats"])
+            share = (got / exact)[exact > 0]  # the non-canonical probability, relative to the canonical's
+            return {"openings": len(d), "opening_bytes": d["n_bytes"].mean(), "opening_gap_exact": gap(d, "exact_nats"),
+                    "opening_gap_beam": gap(d, "beam_nats"), "recovered_mean": share.mean(), "recovered_min": share.min()}
+
+        t = t.merge(apply(o, opened, key), on=key, how="left")
+    return t
+
+
 # ---------------------------------------------------------------------------------------
 # Markdown
 
@@ -276,8 +320,11 @@ def canonical_gap_md(t: pd.DataFrame) -> str:
              "FLORES-200 devtest sentences, each scored alone after BOS. *Gap*: bits per byte by which scoring "
              "only the canonical token sequence overstates the text's BPB, estimated by importance sampling over "
              "the token sequences that spell it (Chirkova et al., 2023; recount.eval.canonical); half-draw beside "
-             "it as a convergence check. *Reaches D*: the gap minus the same unit's r = 1 reference gap, the part "
-             "that would inflate the level contrast. Mean row: over languages.\n"]
+             "it as a convergence check. With 32 draws under the trained models this is a lower bound far below "
+             "the gap: a draw almost never follows the canonical sequence, and the draws that leave it come back "
+             "with negligible weight (PREREGISTRATION.md, amendment 4). `canonical_beam.md` has amendment 4's beam. "
+             "*Reaches D*: the gap minus the same unit's r = 1 reference gap, the part that would inflate the level "
+             "contrast. Mean row: over languages.\n"]
     for (model, seed), g in t.groupby(["model", "seed"]):
         parts.append(f"\n## Model {model}, seed {seed} ({int(g['sentences'].iloc[0])} sentences per endpoint)\n")
         g = g.sort_values(["level", "endpoint", "lang"])
@@ -296,12 +343,58 @@ def canonical_gap_md(t: pd.DataFrame) -> str:
     return "\n".join(parts) + "\n"
 
 
+def canonical_beam_md(t: pd.DataFrame, beam: int = 16, check: int = 64) -> str:
+    parts = ["# The canonical-tokenization gap, by beam search (amendment 4)\n",
+             "The sentences of canonical_gap.md, each scored alone after BOS. *Gap*: bits per byte by which scoring "
+             "only the canonical token sequence overstates the text's BPB, from a beam over the token sequences that "
+             "spell it (recount.eval.canonical_beam): a lower bound, exact once the beam keeps every spelling. "
+             "*Reaches D*: the gap minus the same unit's r = 1 reference gap. *Subset*: the first sentences at both "
+             f"widths; B = {beam} is called unconverged where B = {check} raises the subset's gap by more than "
+             f"{UNCONVERGED[0]:.0%} and by more than {UNCONVERGED[1]:g} bits per byte. *Openings*: each subset "
+             "sentence's longest opening whose canonical tokens at every level are the sentence's own and that has at "
+             "most 5,000 spellings at r = 1, every spelling scored; *recovered*: the share of the exact non-canonical "
+             "probability the beam found. Mean row: over languages.\n"]
+    def name(level: float, endpoint: str) -> str:
+        return "reference" if level == 1.0 else ("content-matched" if endpoint == "final" else "as deployed")
+
+    has_check, has_open = "gap_check_wide" in t, "openings" in t
+    for (model, seed), g in t.groupby(["model", "seed"]):
+        g = g.sort_values(["level", "endpoint", "lang"])
+        parts.append(f"\n## Model {model}, seed {seed} ({int(g['sentences'].iloc[0])} sentences per endpoint)\n")
+        rows, opened = [], []
+        for (level, endpoint), h in g.groupby(["level", "endpoint"], sort=False):
+            mean = h.drop(columns="converged", errors="ignore").mean(numeric_only=True).to_dict()
+            labelled = [(LANG_NAMES.get(x["lang"], x["lang"]), x) for x in h.to_dict("records")]
+            for label, r in labelled + [("**mean**", mean)]:
+                row = [f"{level:g}", name(level, endpoint), label, f"{r['gap_bpb']:.6f}",
+                       "" if level == 1.0 else f"{r['reaches_d']:+.6f}"]
+                if has_check:
+                    conv = "" if pd.isna(r.get("converged")) else ("yes" if r["converged"] else "no")
+                    row += [f"{r['gap_check_narrow']:.6f}", f"{r['gap_check_wide']:.6f}", conv]
+                rows.append(row)
+                if has_open:
+                    opened.append([f"{level:g}", name(level, endpoint), label, f"{r['openings']:.0f}",
+                                   f"{r['opening_bytes']:.1f}", f"{r['opening_gap_exact']:.6f}",
+                                   f"{r['opening_gap_beam']:.6f}", f"{r['recovered_mean']:.1%}",
+                                   f"{r['recovered_min']:.1%}"])
+        header = ["r", "endpoint", "language", f"gap, B = {beam}", "reaches D"]
+        header += [f"subset, B = {beam}", f"subset, B = {check}", "converged"] if has_check else []
+        parts.append(_table(header, rows))
+        if has_open:
+            parts.append(f"\n### Openings: exact against the beam (B = {beam})\n")
+            parts.append(_table(["r", "endpoint", "language", "openings", "bytes", "exact gap", "beam gap",
+                                 "recovered, mean", "recovered, lowest"], opened))
+    return "\n".join(parts) + "\n"
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--runs", default="results/all_runs.csv")
     ap.add_argument("--analysis", default="results/analysis.json", help="for each model's SESOI")
     ap.add_argument("--study", default="configs/study.yaml")
     ap.add_argument("--canonical", default="results/canonical_gap.csv", help="used if it exists")
+    ap.add_argument("--canonical-beam", default="results/canonical_beam.csv", help="used if it exists")
+    ap.add_argument("--canonical-openings", default="results/canonical_openings.csv")
     ap.add_argument("--out", default="results/appendix")
     args = ap.parse_args()
     runs = runs_table.load(args.runs)
@@ -319,6 +412,9 @@ def main() -> None:
     }
     if Path(args.canonical).exists():
         tables["canonical_gap"] = (canonical_gap(Path(args.canonical)), canonical_gap_md)
+    if Path(args.canonical_beam).exists():
+        tables["canonical_beam"] = (canonical_beam(Path(args.canonical_beam), Path(args.canonical_openings)),
+                                    canonical_beam_md)
     for name, (table, md) in tables.items():
         table.to_csv(out / f"{name}.csv", index=False)
         (out / f"{name}.md").write_text(md(table))
