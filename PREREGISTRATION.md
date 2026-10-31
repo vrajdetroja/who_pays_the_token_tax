@@ -392,3 +392,57 @@ data; x_data and x_fert are correlated across languages; the tokenizer's Unicode
 changes some characters before scoring. Thirty points, two regressors.
 
 **Compute:** inference only, in fp32, on an Apple M3 (MPS).
+
+### 4 · 2026-10-31, after the sampled estimate: a beam for the canonical gap (diagnostic)
+
+**What I had seen.** All of the sampled estimate (`results/canonical_gap.csv`,
+`results/appendix/canonical_gap.md`): model M's 25 seed-0 endpoints,
+200 FLORES-200 devtest sentences each, 32 importance-sampling draws per sentence. The gap reads
+below 0.000005 bits per byte at 22 endpoints and 0.0002 to 0.0006 for Chinese at r = 1 and 1.5,
+and 30 of the 5,000 sentences drew their canonical sequence even once. A read-only check during
+the run, on the Arabic reference model: along canonical sequences the canonical token holds a
+median 81% of the probability on the tokens that spell the next bytes, so a draw follows a whole
+canonical sequence with probability around 10^-18; on eight 21–23-byte openings with every
+spelling scored, the exact gap was 0.0009 to 0.017 nats (1.9 for one), and 32 draws fell below
+it in seven, to zero in one. The Basque r = 2.25 model's canonical sequences looked the same.
+Its canonical BPB also gives seed 0's level contrasts on these sentences, the ones the
+gap would bias: 0.041 and 0.055 BPB content-matched at r = 1.5 and 2.25, 0.077 and 0.147 as
+deployed (means over languages). No beam has been run on a trained model.
+
+**What I will run.** §7's diagnostic, still reported and not tested, with the sampler replaced:
+
+- **Estimator:** a beam over the token sequences that spell each sentence. Moving through the
+  sentence a byte at a time, the partial spellings that end at that byte are cut to the B most
+  probable, and each is extended by every reachable token that spells the next bytes. The
+  canonical sequence is always kept, and its probability is the exact one, as before.
+  p_beam(text) = p(canonical) + the summed probability of every other complete spelling the
+  beam reaches: a lower bound on p(text), so the gap, log2(p_beam / p(canonical)) / bytes, is a
+  lower bound on the true gap, and exact once B keeps every spelling.
+- **Where:** the same 25 endpoints and the same 200 sentences per language as before, at
+  B = 16. Convergence: B = 64 on the first 25 of those 200, at every endpoint.
+- **Against exact enumeration:** for those 25 sentences, the longest opening whose canonical
+  tokens, at every level, are the sentence's own first tokens and that has at most 5,000
+  spellings at r = 1 (the level with the most); at least 8 bytes, or the sentence is skipped.
+  Every spelling is scored teacher-forced, by code separate from the beam's, and the beam
+  (B = 16) runs on the same openings.
+- **Reported:** per endpoint, the gap at B = 16 and the part of it that reaches D (its difference
+  from the same language's r = 1 reference), with means over languages; on the subset, the gap at
+  B = 16 and 64; on the openings, the exact gap and the share of the exact non-canonical
+  probability the beam recovers. The sampled values stay in the appendix, labeled as the
+  lower bound they are.
+- **Reading it:** at an endpoint where B = 64 raises the subset's gap by more than a quarter and
+  by more than 0.00001 bits per byte, B = 16 is called unconverged, and both widths are reported
+  as lower bounds.
+
+**Prediction, written before running.** The gap stays below 0.002 bits per byte at every endpoint,
+and the part that reaches D, averaged over languages, stays below 0.002 BPB in magnitude at both
+levels and both endpoints: under 4% of the 0.055 BPB content-matched contrast at r = 2.25. The
+basis is the Arabic reference openings, 0.00006 to 0.0012 bits per byte apart from the one
+whose canonical spelling was not its most probable (0.13).
+
+**What a beam does not fix.** It is still a lower bound: a sentence whose remaining probability is
+spread thinly over many spellings keeps some of it outside any beam, and the B = 64 subset only
+samples that. Sentences are scored alone after BOS, as before, and only model M's seed-0
+endpoints are scored.
+
+**Before it runs:** the code is tested against exact enumeration on a tiny model.
