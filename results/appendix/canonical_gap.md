@@ -1,6 +1,6 @@
 # The canonical-tokenization gap
 
-FLORES-200 devtest sentences, each scored alone after BOS. *Gap*: bits per byte by which scoring only the canonical token sequence overstates the text's BPB, estimated by importance sampling over the token sequences that spell it (Chirkova et al., 2023; recount.eval.canonical); half-draw beside it as a convergence check. *Reaches D*: the gap minus the same unit's r = 1 reference gap, the part that would inflate the level contrast. Mean row: over languages.
+FLORES-200 devtest sentences, each scored alone after BOS. *Gap*: bits per byte by which scoring only the canonical token sequence overstates the text's BPB, estimated by importance sampling over the token sequences that spell it (Chirkova et al., 2023; recount.eval.canonical); half-draw beside it as a convergence check. With 32 draws under the trained models this is a lower bound far below the gap: a draw almost never follows the canonical sequence, and the draws that leave it come back with negligible weight (PREREGISTRATION.md, amendment 4). `canonical_beam.md` has amendment 4's beam. *Reaches D*: the gap minus the same unit's r = 1 reference gap, the part that would inflate the level contrast. Mean row: over languages.
 
 
 ## Model M, seed 0 (200 sentences per endpoint)
