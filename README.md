@@ -6,8 +6,14 @@ much vocabulary the tokenizer allocates (1×, 1.5× and 2.25× tokens per byte),
 training budget and the context window both in tokens and in bytes. It asks how much of the
 quality penalty is fertility itself, and how much is token-denominated accounting.
 
-The hypotheses, design and analysis plan are in [PREREGISTRATION.md](PREREGISTRATION.md),
-committed before any model was trained; any later change is a dated amendment in the same file.
+**Result.** At 2.25× fertility, counting in content removes 75% of the penalty (95% CI 69–89%)
+for the 17M-parameter model, so the preregistered hypothesis that accounting dominates holds. A
+content-matched residual of 0.039 bits per byte (95% CI 0.007–0.070) remains, as costly as losing
+18% of the training text. The write-up is [REPORT.md](REPORT.md); the hypotheses, design and
+analysis plan, committed before any model was trained and amended only with dated entries, are
+[PREREGISTRATION.md](PREREGISTRATION.md).
+
+![Figure 1](results/figures/figure1.png)
 
 ## The design in one table
 
@@ -34,15 +40,17 @@ src/recount/
   tok/       dose tokenizers (prefixes of one merge list in a fixed id space), dose search, shards
   train/     document-order streams (common random numbers), run grid with cooldown branches,
              trainer, run queue
-  eval/      bits per byte under both context protocols, context-shuffle and stride controls
+  eval/      bits per byte under both context protocols, context-shuffle and stride controls,
+             the canonical-tokenization gap, the XGLM check
   analysis/  decomposition, HKSJ meta-analysis, TOST, Fieller interval for S, power by
-             simulation, simulator with known truth, figures, sealing
+             simulation, simulator with known truth, figures, appendix tables, sealing
   table1.py  token premiums of production tokenizers on FLORES-200
   smoke.py   the whole pipeline on synthetic text on the CPU (~1 minute)
 src/microlm/ the model, optimizer, schedules, checkpoints, and run hashing, vendored
              unchanged from micro-lm-ablations (see src/microlm/VENDORED.md)
 queues/      the pilot and main-grid job lists
-results/     Table 1, the power simulation, the simulated analysis, and the runs as they finish
+results/     every endpoint, the analysis, figures, appendix tables, Table 1, the XGLM check
+sealed/      the pilot's level contrasts, opened after the main analysis (hashes in results/seals/)
 ```
 
 ## Reproducing it
@@ -55,7 +63,7 @@ make data tokenizers     # FineWeb-2 samples -> data/text/<lang>/; tokenizers an
 make table1              # Table 1 from FLORES-200
 make plan-main           # the main grid's job list -> queues/main.yaml
 python -m recount.train.queue queues/main.yaml   # train and evaluate every job, in order (GPU)
-make analysis            # the preregistered analysis
+make analysis appendix   # the preregistered analysis and the appendix tables
 make figures RUNS=results/all_runs.csv
 ```
 
