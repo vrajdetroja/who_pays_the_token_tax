@@ -14,6 +14,7 @@ data = ["huggingface_hub", "pyarrow"]
 wandb = ["wandb"]
 analysis = ["pandas", "matplotlib", "scipy"]
 table1 = ["tiktoken", "tokenizers", "transformers"]
+xglm = ["transformers>=5"]  # the XGLM check (amendment 3)
 dev = ["pytest"]
 
 [tool.setuptools.packages.find]

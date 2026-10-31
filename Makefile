@@ -4,8 +4,11 @@
 PY ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python)
 LANGS := eus_Latn rus_Cyrl arb_Arab cmn_Hani tam_Taml
 SCRATCH ?= /tmp/recount-smoke
+HF ?= $(if $(wildcard .venv/bin/hf),.venv/bin/hf,hf)
+XGLM_FILES := config.json generation_config.json tokenizer.json tokenizer_config.json special_tokens_map.json \
+              sentencepiece.bpe.model pytorch_model.bin README.md
 
-.PHONY: test smoke sim power data tokenizers table1 plan-scout plan-scout2 plan-main analysis appendix figures
+.PHONY: test smoke sim power data tokenizers table1 plan-scout plan-scout2 plan-main analysis appendix xglm-weights xglm figures
 
 test:                ## unit tests: vendored microlm (107) + recount
 	$(PY) -m pytest
@@ -41,6 +44,17 @@ plan-main:           ## the main grid queue
 appendix:            ## appendix tables from the real runs, and segmentation examples (needs data/)
 	$(PY) -m recount.analysis.appendix --runs results/all_runs.csv --out results/appendix
 	$(PY) -I -m recount.tok.examples --out results/appendix/segmentation.md
+
+xglm-weights:        ## XGLM-564M and XGLM-1.7B at the revisions amendment 3 pins (4.6 GB) -> data/raw/xglm
+	$(HF) download facebook/xglm-564M $(XGLM_FILES) --revision f3059f01b98ccc877c673149e0178c0e957660f9 \
+	    --local-dir data/raw/xglm/xglm-564M
+	$(HF) download facebook/xglm-1.7B $(XGLM_FILES) --revision d23a5e8e2164af31a84a26756b9b17f925143050 \
+	    --local-dir data/raw/xglm/xglm-1.7B
+
+xglm:                ## the XGLM check (amendment 3; exploratory): bits per FLORES sentence, then the fit
+	$(PY) -I -m recount.eval.xglm --model-dir data/raw/xglm/xglm-564M --name 564M
+	$(PY) -I -m recount.eval.xglm --model-dir data/raw/xglm/xglm-1.7B --name 1.7B --max-tokens 2048
+	$(PY) -I -m recount.analysis.xglm --sentences results/xglm/sentences.csv --out results/xglm
 
 analysis:            ## the preregistered analysis on real runs
 	$(PY) -m recount.analysis.analyze --runs results/all_runs.csv --out results/analysis.json
