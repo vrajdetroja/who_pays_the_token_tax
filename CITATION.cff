@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Who pays the token tax? Fertility or accounting in the quality penalty of high-fertility languages"
+abstract: >-
+  A preregistered study that separates tokenizer fertility from token-denominated accounting,
+  within each of five languages at fixed text. For a 17M-parameter model at 2.25x fertility,
+  counting the training budget and the context window in content removes 75% of the
+  bits-per-byte penalty (95% CI 69-89%); a content-matched residual of 0.039 bits per byte
+  (95% CI 0.007-0.070) remains.
+authors:
+  - family-names: "Detroja"
+    given-names: "Vraj"
+type: software
+license: MIT
+repository-code: "https://github.com/vrajdetroja/who_pays_the_token_tax"
+url: "https://github.com/vrajdetroja/who_pays_the_token_tax"
+date-released: "2026-10-31"
+keywords:
+  - tokenization
+  - tokenizer fertility
+  - multilingual language models
+  - bits per byte
+  - preregistration
+preferred-citation:
+  type: generic
+  title: "Who pays the token tax? Fertility or accounting in the quality penalty of high-fertility languages"
+  authors:
+    - family-names: "Detroja"
+      given-names: "Vraj"
+  year: 2026
+  month: 10
+  url: "https://github.com/vrajdetroja/who_pays_the_token_tax"

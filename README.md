@@ -80,3 +80,27 @@ crawl dump, and URL.
 | Content | byte premium (vs. English) × 600 MB per language; model S reads the first third |
 | Reference budget T | tokens of the content under the full tokenizer |
 | SESOI | b · ln(1/0.9): the cost of losing 10% of the training text, b = data-curve slope |
+
+## Citation
+
+If you use this work, please cite it. GitHub's **Cite this repository** button gives the same
+entry from [CITATION.cff](CITATION.cff).
+
+```bibtex
+@misc{detroja2026tokentax,
+  author       = {Detroja, Vraj},
+  title        = {{Who pays the token tax?} Fertility or accounting in the quality penalty of
+                  high-fertility languages},
+  year         = {2026},
+  month        = oct,
+  howpublished = {\url{https://github.com/vrajdetroja/who_pays_the_token_tax}},
+  note         = {Preregistered study}
+}
+```
+
+## License
+
+The code and documents are released under the [MIT License](LICENSE). The data the study uses
+keep their own licenses and are not redistributed here: FineWeb-2 (ODC-By 1.0), FLORES-200
+(CC BY-SA 4.0; one devtest sentence is quoted in `results/appendix/segmentation.md`), and the
+XGLM checkpoints (MIT).
