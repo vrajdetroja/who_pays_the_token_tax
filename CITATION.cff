@@ -11,6 +11,14 @@ authors:
   - family-names: "Detroja"
     given-names: "Vraj"
 type: software
+doi: 10.5281/zenodo.23881216
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23881216
+    description: "All versions; resolves to the latest"
+  - type: doi
+    value: 10.5281/zenodo.23881217
+    description: "Version 1.0.0"
 license: MIT
 repository-code: "https://github.com/vrajdetroja/who_pays_the_token_tax"
 url: "https://github.com/vrajdetroja/who_pays_the_token_tax"
@@ -28,5 +36,7 @@ preferred-citation:
     - family-names: "Detroja"
       given-names: "Vraj"
   year: 2026
-  month: 10
-  url: "https://github.com/vrajdetroja/who_pays_the_token_tax"
+  doi: 10.5281/zenodo.23881216
+  url: "https://doi.org/10.5281/zenodo.23881216"
+  publisher:
+    name: "Zenodo"

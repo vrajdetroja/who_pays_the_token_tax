@@ -1,5 +1,7 @@
 # Who pays the token tax?
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23881216.svg)](https://doi.org/10.5281/zenodo.23881216)
+
 High-fertility languages (more tokens per byte) are usually also low-data languages, and every
 budget that touches them is counted in tokens. This study holds the text fixed, changes only how
 much vocabulary the tokenizer allocates (1×, 1.5× and 2.25× tokens per byte), and counts the
@@ -84,17 +86,19 @@ crawl dump, and URL.
 ## Citation
 
 If you use this work, please cite it. GitHub's **Cite this repository** button gives the same
-entry from [CITATION.cff](CITATION.cff).
+entry from [CITATION.cff](CITATION.cff). The DOI below always resolves to the latest version;
+version 1.0.0 alone is [10.5281/zenodo.23881217](https://doi.org/10.5281/zenodo.23881217).
 
 ```bibtex
 @misc{detroja2026tokentax,
-  author       = {Detroja, Vraj},
-  title        = {{Who pays the token tax?} Fertility or accounting in the quality penalty of
-                  high-fertility languages},
-  year         = {2026},
-  month        = oct,
-  howpublished = {\url{https://github.com/vrajdetroja/who_pays_the_token_tax}},
-  note         = {Preregistered study}
+  author    = {Detroja, Vraj},
+  title     = {{Who pays the token tax?} Fertility or accounting in the quality penalty of
+               high-fertility languages},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.23881216},
+  url       = {https://doi.org/10.5281/zenodo.23881216},
+  note      = {Preregistered study}
 }
 ```
 
